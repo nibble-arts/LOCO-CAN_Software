@@ -20,7 +20,7 @@
 #include "simpletimeout.h"
 #include "flags.h"
 #include "AnalogSwitch.h"
-#include "settings.h"
+// #include "settings.h"
 
 
 class MODULE {
@@ -39,12 +39,16 @@ class MODULE {
 		void _drive_break(void);
 		void _send(void);
 
+		bool _activate(void); // activate controler > returns new state
+
 		bool _active;
 		uint16_t _value;
 
 		uint16_t _drive_val;
 		uint16_t _break_val;
 		uint16_t _power_val;
+
+		bool _collision; // drive message collision
 
 		ANALOGSWITCH _mains_switch;
 		ANALOGSWITCH _dir_switch;

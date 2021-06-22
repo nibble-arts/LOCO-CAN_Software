@@ -55,14 +55,15 @@
 #include "simpletimeout.h"
 #include "flags.h"
 #include "AnalogSwitch.h"
-#include "settings.h"
+// #include "settings.h"
 
 
 CAN_COM can_com;
 
-SETTINGS settings;
+// SETTINGS settings;
 
 MODULE module;
+
 
 void setup() {
 
@@ -76,7 +77,7 @@ void setup() {
 	Serial.println("Start CAN Controler");
 
 	can_com.begin(CAN_BUS_SPEED); // set CAN speed
-	can_com.setLivetime(500); // set live timeout for CAN communication (this module sends heartbeat)
+	can_com.set_alive(500); // set live timeout for CAN communication (this module sends heartbeat)
 
 
 	// register can filters
@@ -95,7 +96,7 @@ void setup() {
 	#endif
 
 	// init settings
-	settings.begin(can_com.uuid(), SOFTWARE_VERSION, MODULE_CONTROLLER, MODULE_MAX_SETTINGS);
+	// settings.begin(can_com.uuid(), SOFTWARE_VERSION, MODULE_CONTROLLER, MODULE_MAX_SETTINGS);
 
 
 	// start module

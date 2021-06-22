@@ -34,7 +34,7 @@
 // select board version
 //
 // =====================================
-#define BOARD_VERSION BOARD_WIFI_V_2_0
+#define BOARD_VERSION BOARD_V_1_0
 #define SOFTWARE_VERSION 0x0100
 #define MODULE_MAX_SETTINGS 23
 
@@ -63,6 +63,10 @@
 #define LIGHT_LOW 338
 #define LIGHT_LOW_TRAIN 680
 #define LIGHT_HIGH_TRAIN 1023
+
+
+// max settings mytes
+#define EEPROM_MAX_DATA 14
 
 // =====================================
 // include module

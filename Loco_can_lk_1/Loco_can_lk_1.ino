@@ -79,6 +79,12 @@ void setup() {
 	can_com.begin(CAN_BUS_SPEED);
 	// can_com.setHeartbeat(HEARTBEAT, CAN_ID_HEARTBEAT);
 
+	#ifdef DEBUG
+		Serial.println();
+		Serial.print("Device UUID: ");
+		Serial.println(can_com.uuid(), HEX);
+	#endif
+
 
 	// register commands to read
 	can_com.register_filter(CAN_ID_MASK, CAN_ID_DRIVE);
@@ -113,13 +119,13 @@ void loop() {
 	uint16_t break_val;
 	uint16_t power_val;
 
+	uint32_t filter;
+
 
 	// check for message
-	if (can_com.read(&message)) {
+	if (filter = can_com.read(&message)) {
 
-// Serial.println(message.id & CAN_ID_MASK, HEX);
-
-		switch(message.id & CAN_ID_MASK) {
+		switch(filter) {
 
 			case CAN_ID_DRIVE:
 
@@ -144,8 +150,6 @@ void loop() {
 				break;
 
 			case CAN_ID_HEARTBEAT:
-				Serial.print("h");
-
 				module.heartbeat();
 
 				break;

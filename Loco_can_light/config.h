@@ -14,7 +14,6 @@
 #include "loco_config.h"
 // #include "can_protocol.h"
 
-#define VERSION 0.9.0
 
 // =====================================
 // The main module methods

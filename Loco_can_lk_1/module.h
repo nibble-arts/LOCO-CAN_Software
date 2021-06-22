@@ -93,7 +93,7 @@ class MODULE {
 		bool _drive_nulled;
 		bool _emergency;
 
-		SIMPLETIMEOUT _drive_timeout;
+		SIMPLETIMEOUT _heartbeat_timeout;
 		SIMPLETIMEOUT _standing_timeout;
 		SIMPLETIMEOUT _voltage_timeout;
 

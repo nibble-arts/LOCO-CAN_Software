@@ -15,12 +15,13 @@
 #define BOARD_LOLIN_D32 2
 #define BOARD_CONTROL_V2.0
 
-#define VERSION 0.9.0
 
 /*
  * select correct motherboard from list above
  */
-#define MOTHERBOARD BOARD_LOLIN_D32
+#define BOARD_VERSION BOARD_LOLIN_D32
+#define SOFTWARE_VERSION 0x0010
+
 
 /*
  * WIFI server configuration

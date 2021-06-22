@@ -14,7 +14,6 @@
 
 #include "loco_config.h"
 
-#define VERSION 0.9.0
 
 // =====================================
 // The main module methods
@@ -36,6 +35,7 @@
 //
 // =====================================
 #define BOARD_VERSION BOARD_V_2_0
+#define SOFTWARE_VERSION 0x0090
 
 
 // =====================================

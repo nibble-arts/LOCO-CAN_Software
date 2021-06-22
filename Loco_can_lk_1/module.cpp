@@ -62,7 +62,7 @@ void MODULE::begin(uint16_t ramp_time) {
 	_emergency = false;
 
 	// start drive data and standing and voltage timeout
-	_drive_timeout.begin(1000);
+	_heartbeat_timeout.begin(1000);
 	_standing_timeout.begin(1000);
 	_voltage_timeout.begin(1000);
 
@@ -81,6 +81,15 @@ void MODULE::update(void) {
 	CAN_MESSAGE message;
 
 	status.set_flag(ERROR_FLAG, false);
+
+
+	// STATI
+	/*
+	 * emergency:
+	 *		heartbeat timeout
+	 * ready:
+	 *		status: 
+	 */
 
 
 	// =======================================
@@ -114,22 +123,37 @@ void MODULE::update(void) {
 
 
 	// =======================================
-	// check for drive data timeout
-	if (_drive_timeout.check()) {
+	// heartbeat timeout > STOP ALL
+	if (_heartbeat_timeout.check()) {
 
 		switches.set(0);
 
 		_emergency = true;
-		status.set_flag(ERROR_FLAG, true);
 		_drive_nulled = false;
+
+		status.set_flag(ERROR_FLAG, true);
 	}
 
 
-	// reset emergency, when mains is off
-	if (!status.get_flag(MAINS_FLAG)) {
-		status.set_flag(ERROR_FLAG, false);
-		_emergency = false;
+	// heartbeat OK
+	else {
+
+		// mains on
+		if (status.get_flag(MAINS_FLAG)) {
+
+			status.set_flag(ERROR_FLAG, false);
+			_emergency = false;
+		}
+
+		// mains off
+		else {
+
+			status.set_flag(ERROR_FLAG, true);
+			_emergency = true;
+		}
 	}
+
+
 
 
 	// =======================================
@@ -248,7 +272,7 @@ void MODULE::update(void) {
 
 // heartbeat => retrigger timeout
 void MODULE::heartbeat(void) {
-	_drive_timeout.retrigger();
+	_heartbeat_timeout.retrigger();
 }
 
 

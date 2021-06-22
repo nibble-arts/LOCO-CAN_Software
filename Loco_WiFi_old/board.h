@@ -12,11 +12,11 @@
 #define BOARD_h
 
 
-#if MOTHERBOARD == BOARD_DEVKIT_V1
+#if BOARD_VERSION == BOARD_DEVKIT_V1
   #include "board_devkit_v1.h"
 #endif
 
-#if MOTHERBOARD == BOARD_LOLIN_D32
+#if BOARD_VERSION == BOARD_LOLIN_D32
   #include "board_lolin_d32.h"
 #endif
 

@@ -114,23 +114,32 @@ void MODULE::update(void) {
 	// RECEIVE DATA
 	_receive(message);
 
-	// check for CAN and drive connection
-	if (!can_com.alive() || _drive_timeout.check() || !_active) {
+	// check for CAN drive connection
+	if (!can_com.alive() || _drive_timeout.check()) {
 		_status.set(0);
+		_active = false;
 	}
-	
+
 
 	// set switches and analog values
 	_mains();
+	_activate();
 	_dir();
 	_light();
 	_drive_break();
+
+// Serial.print(_active);
+// Serial.print(" ");
+// Serial.print(_switches.get(), BIN);
+// Serial.print(" ");
+// Serial.println(_status.get(), BIN);
 
 	// send data to CAN bus
 	_send();
 
 	// set status led
 	_led();
+
 
 	// update _status LED
 	_status_led.update();
@@ -143,7 +152,7 @@ void MODULE::update(void) {
 void MODULE::_receive(CAN_MESSAGE message) {
 
 	uint16_t filter;
-
+	_collision = false;
 
 	if (filter = can_com.read(&message)) {
 
@@ -151,12 +160,11 @@ void MODULE::_receive(CAN_MESSAGE message) {
 		// set _status
 		switch (filter) {
 
-			// _status
+			// status
 			case  CAN_ID_STATUS:
 				_status.set(message.data[0]);
 				_drive_timeout.retrigger();
 				break;
-
 
 
 			// set battery voltage
@@ -173,6 +181,12 @@ void MODULE::_receive(CAN_MESSAGE message) {
 				break;
 
 
+			// check for other drive messages
+			case CAN_ID_DRIVE:
+				_collision = true;
+				break;
+
+
 			// light current
 			// case CAN_ID_LIGHT_CURRENT:
 
@@ -180,25 +194,34 @@ void MODULE::_receive(CAN_MESSAGE message) {
 			// 	Serial.println(char2int(message.data[0], message.data[1]), HEX);
 			// 	break;
 		}
+	}
+}
 
 
+// ========================================================================
+// ACTIVATE
+bool MODULE::_activate(void) {
 
-		// foreign drive commands
-	// ========================================================================
-	// TODO
-	// check for other controllers
-	// only one may be avtive
+	// foreign drive commands
+// ========================================================================
+// TODO
+// check for other controllers
+// only one may be avtive
 
+	if (_collision) {
+		_active = false;
+	}
 
+	else {
 
-		if (filter == CAN_ID_DRIVE) {
-			_active = false;
+		// no other drive commands found and mains is on
+		// set active
+		if (_mains_switch.get() > 1) {
+			_active = true;
 		}
 
-		// no other drive commands found
-		// set active
 		else {
-			_active = true;
+			_active = false;
 		}
 	}
 }
@@ -401,6 +424,13 @@ void MODULE::_led() {
 	if (!can_com.alive()) {
 		_status_led.color(RED);
 		_status_led.flash(200);
+	}
+
+
+	// ERROR status
+	else  if (_status.get_flag(ERROR_FLAG)) {
+		_status_led.color(RED);
+		_status_led.blink(500);
 	}
 
 
