@@ -1,0 +1,21 @@
+
+arnakke
+Re: How to change the PWM frequency on ATmega 328p to 16Khz.
+#5
+Nov 08, 2013, 09:42 pm
+Assuming you don't care about the specific frequency, but just want it out of the audible range, you can easily get 31 kHz PWM on pin 9 and 10 (controlled by Timer1) and / or 11 and 3 (controlled by Timer2).
+Code: [Select]
+
+
+void setup() {
+  // Set PWM frequency to 31 kHz for pin 9 and 10
+  TCCR1B = TCCR1B & 0b11111000 | 1;
+}
+
+void loop() {
+  analogWrite(10, somevalue);
+}
+
+
+
+See the PWM cheat sheet page for other settings: http://playground.arduino.cc/Main/TimerPWMCheatsheet

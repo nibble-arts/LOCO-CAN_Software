@@ -1,0 +1,246 @@
+<html>
+  <head>
+    <meta charset="utf-8"/> 
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <link rel="icon" href="data:,">
+    <title>Loco WiFi</title>
+
+    <style>
+
+      body {
+        margin: 0;
+        padding: 0;
+        font-size: 10px;
+      }
+
+      .grid {
+        display: grid;
+
+        grid-template-columns: [start] repeat(10, 1fr [col]);
+        grid-template-rows: [header] repeat(9, 1fr [row]) [status] 30px;
+
+        width: 100vw;
+        height: 100vh;
+
+        margin: 0;
+        padding: 0;
+      }
+      
+      @media (orientation: landscape) {
+
+        .grid {
+          grid-template-areas:
+            "icon locos locos locos locos name name name name uuid"
+            "tally tally measure measure measure measure measure measure tacho tacho"
+            "tally tally measure measure measure measure measure measure tacho tacho"
+            "tally tally switch switch switch switch switch switch tacho tacho"
+            "console console console control control control control dir dir dir"
+            "console console console control control control control dir dir dir"
+            "console console console control control control control breaks breaks breaks"
+            "mains mains mains control control control control breaks breaks breaks"
+            "mains mains mains control control control control breaks breaks breaks"
+            "status status status status status status status status status status";
+        }
+      }
+
+      @media (orientation: portrait) {
+
+        .grid {
+          grid-template-areas:
+            "icon locos name name name name name name name uuid"
+            "measure measure measure measure measure measure measure measure measure measure"
+            "measure measure measure measure measure measure measure measure measure measure"
+            "switch switch switch switch switch switch switch switch switch switch"
+            "tally tally console console console console console tacho tacho tacho"
+            "tally tally console console console console console tacho tacho tacho"
+            "mains control control control control control control dir dir dir"
+            "mains control control control control control control breaks breaks breaks"
+            "mains control control control control control control breaks breaks breaks"
+            "status status status status status status status status status status";
+        }
+      }
+
+
+      .icon {
+        grid-area: icon;
+
+        border: 1px solid red;
+        place-self: stretch;
+      }
+
+      .locos {
+        grid-area: locos;
+
+        border: 1px solid green;
+        place-self: stretch;
+      }
+
+      .name {
+        grid-area: name;
+
+        border: 1px solid green;
+        place-self: stretch;
+      }
+
+      .uuid {
+        grid-area: uuid;
+
+        border: 1px solid green;
+        place-self: stretch;
+      }
+
+      .tally {
+        grid-area: tally;
+        place-self: stretch;
+        border: 2px solid grey;
+        border-radius: 3px;
+      }
+
+      .console {
+        grid-area: console;
+        place-self: stretch;
+        border: 2px solid grey;
+        border-radius: 3px;
+        background-color: lightyellow;
+      }
+
+      .switch {
+        grid-area: switch;
+        place-self: stretch;
+        border: 2px solid grey;
+        border-radius: 3px;
+      }
+
+      .tacho {
+        grid-area: tacho;
+        place-self: stretch;
+        border: 2px solid grey;
+        border-radius: 3px;
+      }
+
+      .measure {
+        grid-area: measure;
+        place-self: stretch;
+        border: 2px solid grey;
+        border-radius: 3px;
+      }
+
+      .control {
+        grid-area: control;
+        place-self: stretch;
+        border: 2px solid grey;
+        border-radius: 3px;
+      }
+
+      .breaks {
+        grid-area: breaks;
+        place-self: stretch;
+        border: 2px solid grey;
+        border-radius: 3px;
+      }
+
+      .mains {
+        grid-area: mains;
+        place-self: stretch;
+        border: 2px solid grey;
+        border-radius: 3px;
+      }
+
+      .dir {
+        grid-area: dir;
+        place-self: stretch;
+        border: 2px solid grey;
+        border-radius: 3px;
+      }
+
+      .status {
+        grid-area: status;
+        blace-self: stretch;
+        color: white;
+        background-color: black
+      }
+
+
+
+      .content {
+        padding: 5px;
+        margin: 3px;
+      }
+
+    </style>
+
+    <script type="text/javascript">
+      function init() {
+
+          document.querySelectorAll(".button").forEach(item => {
+            item.addEventListener("click", function (e) {
+              id = e.srcElement.id;
+
+              document.getElementById("uuid").innerHTML = id;
+            });
+          });
+
+          update();
+      }
+
+
+      function update() {
+          request();        
+
+          setTimeout(update, 1000);
+      }
+
+
+      function request() {
+          var ajax = new XMLHttpRequest();
+
+          ajax.onreadystatechange = function () {
+
+              if(ajax.readyState == 4){
+                status(ajax.responseText);
+              }
+              else{
+                status("connection error");
+              }
+          }
+
+          ajax.open("GET", "http://192.168.4.1/api?uuid=12345"); 
+          ajax.send();
+      }
+
+
+      function status (text) {
+        document.getElementById("status").innerHTML = text;
+      }
+
+    </script>
+  </head>
+
+  <body>
+
+    <div class="grid">
+
+      <div class="icon"><div class="content">Loco WiFi</div></div>
+      <div class="locos"><div class="content">Locos</div></div>
+
+      <div class="name"><div class="content">Loco name</div></div>
+      <div class="uuid"><div class="content">UUID</div></div>
+
+      <div class="measure"><div class="content">Messgeräte</div></div>
+      <div class="switch"><div class="content">Switches</div></div>
+      <div class="tacho"><div class="content">Tacho</div></div>
+
+      <div class="tally"><div class="content">Lights</div></div>
+
+      <div class="console"><div class="content">Console</div></div>
+
+      <div class="control"><div class="content">control</div></div>
+      <div class="breaks"><div class="content">breaks</div></div>
+      <div class="mains"><div class="content">mains</div></div>
+      <div class="dir"><div class="content">dir</div></div>
+
+      <div class="status"><div class="content"><a href="config.html">CONFIG</a></div></div>
+    </div>
+
+  </body>
+</html>

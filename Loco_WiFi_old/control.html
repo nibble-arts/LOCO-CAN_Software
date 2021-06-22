@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="data:,">
+
+    <!-- CSS to style the on/off buttons -->
+    <style>
+      html {
+        font-family: Helvetica;
+        display: inline-block;
+        margin: 0px auto;
+        text-align: center;
+      }
+      
+      .button {
+        background-color: #4CAF50;
+        border: none;
+        color: white;
+        padding: 16px 40px;
+        text-decoration: none;
+        font-size: 30px;
+        margin: 2px;
+        cursor: pointer;
+      }
+
+      .button2 {
+        background-color: #555555;
+      }
+    </style>
+  </head>
+
+  <body>
+
+    <p>Latenz: <span class="time"></span> ms</p>
+
+    <h1>ESP32 Web Server</h1>
+
+    <p>GPIO 26 - State " + output26State + "</p>
+
+<!--      if (output26State=="off") {-->
+      <p><a href="?port=26&status=on"><button class="button">ON</button></a></p>
+<!--      } else {
+      <p><a href="?port=26&status=off"><button class="button button2">OFF</button></a></p>
+      }
+-->
+
+    <p>GPIO 27 - State " + output27State + "</p>
+
+<!--      // If the output27State is off, it displays the ON button       
+      if (output27State=="off") {-->
+      <p><a href="?port=27&status=on"><button class="button">ON</button></a></p>
+<!--      } else {
+      <p><a href="?port=27&status=off"><button class="button button2">OFF</button></a></p>
+      }
+-->
+
+  </body>
+</html>

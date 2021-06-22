@@ -1,0 +1,119 @@
+body {
+	font-family: sans-serif;
+	font-size: 11pt;
+	color: white;
+}
+
+*{
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+.page {
+	display: grid;
+
+	grid-template-columns: repeat(4, 1fr);
+	grid-template-rows: auto auto 1fr;
+
+	grid-template-areas:
+		'title title title buttons'
+		'status action time buttons'
+		'content content content content';
+
+	grid-gap: 3px;
+
+	width: 100vw;
+	height: 100vh;
+	background-color: #505050;
+
+	padding: 10px;
+	overflow: hidden;
+}
+
+.title {
+	font-size: 14pt;
+	font-weight: bold;
+}
+
+.buttons {
+	grid-area: buttons;
+	text-align: right;
+}
+
+.buttons img {
+	height: 50px;
+	/*cursor: pointer;*/
+}
+
+.status {
+	grid-area: status;
+}
+
+.action {
+	grid-area: action;
+}
+
+.time {
+	grid-area: time;
+	text-align: right;
+}
+
+.content {
+	grid-area: content;
+	display: grid;
+
+	grid-gap: 10px;
+
+	grid-template-columns: repeat(3, minmax(200px, 1fr));
+	grid-template-rows: repeat(auto-fit, 100px);
+
+	/*border-top: 1px solid #dddddd;*/
+	/*border-bottom: 1px solid #dddddd;*/
+
+	overflow-y: scroll;
+}
+
+.disabled {
+	color: currentColor;
+	cursor: not-allowed;
+	opacity: 0.5;
+	text-decoration: none;
+}
+
+.enabled {
+	cursor: pointer;
+}
+
+.block {
+	display: grid;
+
+	grid-template-columns: 20px repeat(3, 1fr);
+	grid-template-rows: 20px 1fr;
+
+	grid-template-areas:
+		'type type uuid uuid'
+		'. data data data';
+
+	min-height: 100px;
+
+	border: 1px solid #888888;
+	padding: 4px;
+
+	color: black;
+	background-color: white;
+}
+
+.type {
+	grid-area: type;
+	font-weight: bold;
+}
+
+.uuid {
+	grid-area: uuid;
+	text-align: right;
+}
+
+.data {
+	grid-area: data;
+}
