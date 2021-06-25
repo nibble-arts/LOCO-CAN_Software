@@ -292,8 +292,8 @@ Both versions provide the default FTDI pinout.
 ## LOCO-WIFI (universal)
 The LOCO-WIFI is a universal module with two extension busses besides the two CAN connectors. It can establish a wireless connection via WIFI and Bluetooth. 
 
-### V2.1/V2.1a
-The versions only differ in the pinout of the FDTI-interface. The ESP32 boards are shipped with a bootloader and do not need the SPI flash pads.
+### V2.1
+The ESP32 boards are shipped with a bootloader and do not need the SPI flash pads.
 
 | **IO 1**           | **IO 2**             |
 |:-------------------|:---------------------|
@@ -309,14 +309,16 @@ The versions only differ in the pinout of the FDTI-interface. The ESP32 boards a
 | 9 GND              | 3 IO14               |
 |                    | 4 GND                |
 
-#### FTDI Interface
-| V2.1     | V2.1a     |
-|:---------|:----------|
-| 1 DTS    | **1 DTS** |
-| 2 **TX** | **2 RX**  |
-| 3 **RX** | **3 TX**  |
-| 4 3V3    | **4 3V3** |
-| 5 GND    | **5 GND** |
+### FTDI Interface
+The version provide the default FTDI pinout. To flash a new software version, pin 3 of the 5-pin IO 2 must be connected to GND before power up.
+
+| pin | usage     |
+|:----|:----------|
+| 1   | **1 DTS** |
+| 2   | **2 RX**  |
+| 3   | **3 TX**  |
+| 4   | **4 3V3** |
+| 5   | **GND**   |
 
 
 ### LOCO-Splitbox
