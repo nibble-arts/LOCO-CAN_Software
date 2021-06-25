@@ -1,6 +1,5 @@
 
 # LOCO-CAN
-----------
 The LOCO-CAN-system is designed for the use is miniature railway vehicles. It provides a CAN-bus connecting the different modules inside a locomotive, but also between vehicles in a train.
 
 The system is still under developement. The CAN-specification is defined but can be extended. Board designs are available in different versions, due to the process of evolvement. Besides bugs in the board design details like the pinout of the program interface differ between the versions (see the INTERFACE.md file). 
@@ -21,7 +20,6 @@ To flash the bootloader on Atmega chips latter versions provide three pads to ac
 The hardware versions with the SDI pads are marked with a letter s at the end of the version string.
 
 # Modules
----------
 All modules are equipped with two 4-pin CAN connectors. The following modules are available or in developement:
 
 ## Interface definitions
@@ -40,7 +38,6 @@ Standard FTDI Interface to flash software updates
 
 
 # LOCO-Control
---------------
 The controller module provides connectors to apply pots, switches, leds and meters in an easy way to implement an own controller design.
 
 The analog switch inputs use a potentiometer or a switch with applied resistors to change the voltage on the analog input. The software can learn the distinct positions and map them to discrete switch positions.
@@ -97,7 +94,6 @@ The 5-Volt output can be used to supply additional electronic inside the control
 
 
 # LOCO-Motor
-------------
 With the LOCO-Motor module all types of power drivers can be acceesed via the CAN bus. The setup of the motor software can be adapted to a wide variety of motor control drivers. With the additional light and horn outputs a locomotive control can be set up with a control and a motor module.
 
 ## V2.1a/V2.1b-s
@@ -128,7 +124,6 @@ Pins 6 and 8 are connected to the motor output to sense the voltage. Drive and b
 
 
 # LOCO-Light
-------------
 With the light module different lights can be controlled. Each output ca drive up to 3 Ampere, when using the external +12V input with the version greater V2.1. With the V2.0 only the maximum output current of the CAN-bus can be used.
 
 
@@ -190,14 +185,12 @@ JST XH
 
 
 # LOCO-Single Light
--------------------
 **To do**
 A tiny module with only one CAN connector and one FET driven output for a single light. It can be used for intelligent back lights. In this case, a backlight heartbeat status can detect the train integrity.
 
 
 
 # LOCO-Sensor
--------------
 The sendor module provides four voltage inputs and a current measurement up to 30 Ampere. In addition a speed/pulse input is provided.
 
 ## Hardware version V2.1/V2.1a/V2.1a-s
@@ -245,7 +238,6 @@ The versions only differ in the pinout of the FDTI-interface.
 
 
 ## Universal
-------------
 These modules offer an unallocated connector for universal use. 
 
 ### V1.0
@@ -298,13 +290,12 @@ Both versions provide the default FTDI pinout.
 
 
 ## LOCO-WIFI (universal)
--------------
 The LOCO-WIFI is a universal module with two extension busses besides the two CAN connectors. It can establish a wireless connection via WIFI and Bluetooth. 
 
 ### V2.1/V2.1a
 The versions only differ in the pinout of the FDTI-interface. The ESP32 boards are shipped with a bootloader and do not need the SPI flash pads.
 
-| **IO 1				IO 2**
+| **IO 1**           | **IO 2**             |
 |:-------------------|:---------------------|
 | **9x1 pins**       | **5+4x1 pins**       |
 | 1 +3,3V            | 1 VCC (12V)          |
@@ -329,7 +320,6 @@ The versions only differ in the pinout of the FDTI-interface. The ESP32 boards a
 
 
 ### LOCO-Splitbox
------------------
 The splitbox is a tiny module that split up the CAN-bus line with three connectors. It also provides a power input connector for additional supply of the bus.
 
 For details ot the connector pinouts see the connector section below.
@@ -338,7 +328,6 @@ For details ot the connector pinouts see the connector section below.
 
 
 # Hardware
-----------
 
 ## Wired units
 | Unit            | Type            |
@@ -356,7 +345,6 @@ For details ot the connector pinouts see the connector section below.
 
 
 # Connectors
-------------
 The following connectors for the basic IOs are universal used by all modules if needed.
 
 ## CAN bus
@@ -366,7 +354,7 @@ The CAN-bus is found on all modules, even the WIFI. It connects all modules and 
 Plug: MATE-N-LOK 794617-4
 Jach: MATE-N-LOK 3-794618-4
 
-| pin |                            |
+| pin | usage                      |
 |:---:|:---------------------------|
 | 1   | GND                        |
 | 2   | CAN-L                      |
@@ -380,7 +368,7 @@ Used for speed or rpm measurement.
 Plug: MATE-N-LOK 2-1445055-2
 Jack: MATE-N-LOK 1445022-2
 
-| pin |       |
+| pin | usage |
 |:---:|:------|
 | 1   | Pulse |
 | 2   | GND   |
@@ -392,7 +380,7 @@ Supply input for the LOCO-system.
 Plug: MATE-N-LOK 794617-2
 Jack: MATE-N-LOK 3-794618-2
 
-| pin |                            |
+| pin | usage                      |
 |:---:|:---------------------------|
 | 1   | +6-30 Volt / max. 5 Ampere |
 | 2   | GND                        |
