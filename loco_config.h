@@ -49,7 +49,7 @@
 #define BOARD_V_2_0 3
 
 // WIFI V2.0
-#define BOARD_WIFI_V_2_0 4
+#define BOARD_WIFI_V_2_1 4
 
 
 // =====================================

@@ -30,14 +30,14 @@
 // 10x1 pins
 //
 //	1	VCC
-//	2	D9	(PWM)
-//	3	D8
-//	4	D7
-//	5	D6	(PWM)
-//	6	A0
-//	7	A1
-//	8	A2
-//	9	A3
+//	2	D9	(PWM)	METER_AMP
+//	3	D8			METER_VOLT
+//	4	D7			STATUS_GREEN
+//	5	D6	(PWM)	STATUS_RED
+//	6	A0 			ANALOG_DRIVE
+//	7	A1 			MAINS_SWITCH
+//	8	A2 			DIR_SWITCH
+//	9	A3			LIGHT_SWITCH
 //	10	GND
 
 #if BOARD_VERSION == BOARD_V_1_0
@@ -90,7 +90,7 @@
 	#define ANALOG_DIR_SWITCH A2
 	#define ANALOG_LIGHT_SWITCH A3
 
-#elif BOARD_VERSION == BOARD_WIFI_V_2_0
+#elif BOARD_VERSION == BOARD_WIFI_V_2_1
 
 	#define A0 10
 	#define A1 11

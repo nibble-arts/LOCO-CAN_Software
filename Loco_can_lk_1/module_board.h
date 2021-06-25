@@ -174,6 +174,70 @@
 
 	#define VOLT_MAX_VAL 1024
 
+
+// WIFI BOARD VERSION 2.0
+// 
+// BUS 1
+// 
+// 9x1 pins
+//
+//  1   +3,3V
+//  2   IO27	ADC2/7 	RELAIS_F
+//  3   IO26	ADC2/9 	RELAIS_R
+//  4   IO25	ADC2/8 	RELAIS_M
+//  5   IO33	ADC1/5
+//  6   IO32	ADC1/4 	BREAK_PWM
+//  7   IO35	ADC1/7 	VOLT_1
+//  8   IO34	ADC1/6 	VOLT_2
+//  9   GND
+// 
+// BUS 2
+// 
+// 5+4x1 pins
+//
+//  1   VCC (12V)
+//  2   IO4 	ADC2/0
+//  3   IO0		ADC2/1
+//  4   IO2 	ADC2/2
+//  5   IO15	ADC2/3
+// 
+//  1   IO13	ADC2/4
+//  2   IO12	ADC2/5
+//  3   IO14	ADC2/6 	DRIVE_PWM
+//  4   GND
+
+#if BOARD_VERSION == BOARD_WIFI_V_2_0
+
+    #define CAN_STATUS_LED 5
+
+    // temporary values
+	// #define POT_SPEED A2
+	// #define SWITCH_DIR A3
+
+	// IO definition
+	#define RELAIS_F 27
+	#define RELAIS_R 26                                                         
+
+	#define RELAIS_M 25
+
+	#define HORN -1 
+	#define LICHT -1
+
+	#define PWM_DRIVE 14
+	#define PWM_BREAK 32
+
+	#define DRIVE_FREQUENCY PWM_RAMP_31KHZ
+	#define BREAK_FREQUENCY PWM_RAMP_1KHZ
+
+	#define DRIVE_RAMP 1000
+	#define BREAK_RAMP 500
+
+	#define VOLTAGE_0 35
+	#define VOLTAGE_1 34
+
+	#define VOLT_MAX_VAL 4096
+
+#endif
 #else
 	#error "No valid board version selected"
 #endif
