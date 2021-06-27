@@ -2,7 +2,9 @@
 # LOCO-CAN
 The LOCO-CAN-system is designed for the use is miniature railway vehicles. It provides a CAN-bus connecting the different modules inside a locomotive, but also between vehicles in a train.
 
-The system is still under developement. The CAN-specification is defined but can be extended. Board designs are available in different versions, due to the process of evolvement. Besides bugs in the board design details like the pinout of the program interface differ between the versions (see the INTERFACE.md file). 
+The system is still under developement. The CAN-specification is defined but can be extended. Board designs are available in different versions, due to the process of evolvement. Besides bugs in the board design details like the pinout of the program interface differ between the versions.
+
+The hardware schematics and PCB layout is managed in [LOCO-CAN_Harware](https://github.com/nibble-arts/LOCO-CAN_Hardware) repository.
 
 ## LOCO-CAN System Description
 
