@@ -20,6 +20,8 @@
 #include "simpletimeout.h"
 #include "flags.h"
 #include "AnalogSwitch.h"
+#include "meter.h"
+
 // #include "settings.h"
 
 
@@ -58,8 +60,8 @@ class MODULE {
 		FLAGS _switches;
 		FLAGS _lights;
 
-		Servo _meter_volt;
-		Servo _meter_amp;
+		METER _meter_volt;
+		METER _meter_amp;
 
 		INTELLILED _status_led;
 

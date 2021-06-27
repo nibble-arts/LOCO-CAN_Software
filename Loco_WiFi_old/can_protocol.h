@@ -1,1 +1,0 @@
-/home/tom/Nextcloud2/Technik/Projekte/Eisenbahn/Gartenbahn/Gartenbahn Steuerung/Software/Loco-CAN/can_protocol.h

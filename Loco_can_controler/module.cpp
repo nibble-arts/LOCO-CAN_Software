@@ -6,13 +6,12 @@
  * @lizence: GG0
  */
 
-#include "Servo.h"
-
-#include "config.h"
 
 #include "module.h"
-#include "simpletimeout.h"
+#include "config.h"
 
+
+#include "simpletimeout.h"
 #include "can_com.h"
 #include "can_protocol.h"
 
@@ -69,15 +68,17 @@ void MODULE::begin(void) {
 
 
 	// ===================================================================
-	// start Servo meters
-	_meter_volt.attach(METER_VOLT);
-	_meter_amp.attach(METER_AMP);
-
-	_meter_volt.write(0);
-	_meter_amp.write(0);
+	// start Analog meters
+	_meter_volt.begin(METER_VOLT, METER_TYPE_SERVO);
+	_meter_amp.begin(METER_AMP, METER_TYPE_SERVO);
 
 
 	// ===================================================================
+	// INIT SEQUENCE
+	// set meters to max
+	_meter_volt.set(1000);
+	_meter_amp.set(1000);
+
 	// show startup on status led
 	_status_led.color(RED);
 	_status_led.on();
@@ -93,6 +94,10 @@ void MODULE::begin(void) {
 	delay(500);
 
 	_status_led.off();
+
+	// reset meters
+	_meter_volt.set(0);
+	_meter_amp.set(0);
 
 
 	// ===================================================================
@@ -170,14 +175,14 @@ void MODULE::_receive(CAN_MESSAGE message) {
 			// set battery voltage
 			case CAN_ID_VOLTAGE:
 				_value = char2int(message.data[0], message.data[1]);
-				_meter_volt.write(map(_value, 0, 1023, 0, 180));
+				_meter_volt.set(map(_value, 0, 1023, 0, 1000));
 				break;
 
 
 			// set system current
 			case CAN_ID_CURRENT:
 				_value = char2int(message.data[0], message.data[1]);
-				_meter_amp.write(map(_value, 0, 1023, 0, 180));
+				_meter_amp.set(map(_value, 0, 1023, 0, 1000));
 				break;
 
 

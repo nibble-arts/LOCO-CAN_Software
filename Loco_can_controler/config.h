@@ -68,6 +68,7 @@
 // max settings mytes
 #define EEPROM_MAX_DATA 14
 
+
 // =====================================
 // include module
 #include "module_board.h"
