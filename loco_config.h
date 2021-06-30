@@ -48,8 +48,11 @@
 // V2.0
 #define BOARD_V_2_0 3
 
-// WIFI V2.0
+// WIFI V2.1
 #define BOARD_WIFI_V_2_1 4
+
+// UNIVERSIAL V2.1
+#define BOARD_UNIV_V_2_1 5
 
 
 // =====================================
@@ -184,7 +187,6 @@
  * posit:	position light
  */
 
-
 #define LIGHT_MAIN 7
 #define LIGHT_TRAIN 6
 #define LIGHT_CAB 5
@@ -194,6 +196,28 @@
 #define LIGHT_LOW 1
 #define LIGHT_POSIT 0
 
+
+// =====================================
+//
+// SIGNAL DATA
+//
+// =====================================
+
+/*
+ * 1 byte package
+ *
+ * SIGNAL STATUS
+ * byte 0:   7      6      5      4      3      2      1      0
+ *                                             bell   low   high
+ *
+ * high:    hight frequence signal
+ * low:     low frequence signal
+ * bell:    signal bell
+ */
+
+#define SIGNAL_HIGH 0
+#define SIGNAL_LOW 1
+#define SIGNAL_BELL 2
 
 
 // ==================================

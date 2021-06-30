@@ -67,17 +67,42 @@ void MODULE::begin(void) {
 	_light_switch.learn(LIGHT_HIGH_TRAIN);
 
 
+	// start second analog light switch
+	#ifdef ANALOG_LIGHT_1_SWITCH
+		_light_1_switch.begin(ANALOG_LIGHT_SWITCH);
+
+		_light_1_switch.learn(LIGHT_1_OFF);
+		_light_1_switch.learn(LIGHT_1_LOW);
+		_light_1_switch.learn(LIGHT_1_LOW_TRAIN);
+		_light_1_switch.learn(LIGHT_1_HIGH_TRAIN);
+	#endif
+
+
 	// ===================================================================
 	// start Analog meters
 	_meter_volt.begin(METER_VOLT, METER_TYPE_SERVO);
-	_meter_amp.begin(METER_AMP, METER_TYPE_SERVO);
+
+	#ifdef METER_AMP
+		_meter_amp.begin(METER_AMP, METER_TYPE_SERVO);
+	#endif
+
+	#ifdef METER_MOTOR_VOLT
+		_meter_motor.begin(METER_MOTOR_VOLT, METER_TYPE_SERVO);
+	#endif
 
 
 	// ===================================================================
 	// INIT SEQUENCE
 	// set meters to max
 	_meter_volt.set(1000);
-	_meter_amp.set(1000);
+
+	#ifdef METER_AMP
+		_meter_amp.set(1000);
+	#endif
+
+	#ifdef METER_MOTOR_VOLT
+		_meter_motor.set(1000);
+	#endif
 
 	// show startup on status led
 	_status_led.color(RED);
@@ -97,7 +122,14 @@ void MODULE::begin(void) {
 
 	// reset meters
 	_meter_volt.set(0);
-	_meter_amp.set(0);
+
+	#ifdef METER_AMP
+		_meter_amp.set(0);
+	#endif
+
+	#ifdef METER_MOTOR_VOLT
+		_meter_motor.set(0);
+	#endif
 
 
 	// ===================================================================
@@ -132,6 +164,16 @@ void MODULE::update(void) {
 	_dir();
 	_light();
 	_drive_break();
+
+
+    // *****************
+	// switch instrument light if output is present
+	#ifdef INSTRUMENT_LIGHT
+
+
+	#endif
+    // *****************
+
 
 // Serial.print(_active);
 // Serial.print(" ");
@@ -178,13 +220,29 @@ void MODULE::_receive(CAN_MESSAGE message) {
 				_meter_volt.set(map(_value, 0, 1023, 0, 1000));
 				break;
 
+// *****************
+// OPTIONAL - depends on the board version
+// display motor voltage
+#ifdef METER_MOTOR_VOLT
+			case CAN_ID_MOTOR_VOLTAGE:
+				_value = char2int(message.data[0], message.data[1]);
+				_meter_motor.set(map(_value, 0, 1023, 0, 1000));
+				break;
+#endif
+// *****************
+
+// *****************
+// OPTIONAL - depends on the board version
+// display current
+#ifdef METER_AMP
 
 			// set system current
 			case CAN_ID_CURRENT:
 				_value = char2int(message.data[0], message.data[1]);
 				_meter_amp.set(map(_value, 0, 1023, 0, 1000));
 				break;
-
+#endif
+// *****************
 
 			// check for other drive messages
 			case CAN_ID_DRIVE:
@@ -192,12 +250,19 @@ void MODULE::_receive(CAN_MESSAGE message) {
 				break;
 
 
-			// light current
-			// case CAN_ID_LIGHT_CURRENT:
+// *****************
+// OPTIONAL - depends on the board version
+// switch instrument light by light message if output is present
+#ifdef INSTRUMENT_LIGHT
 
-			// 	Serial.print("Light current: ");
-			// 	Serial.println(char2int(message.data[0], message.data[1]), HEX);
-			// 	break;
+			// set instrument light
+			case CAN_ID_LIGHT:
+				digitalWrite(INSTRUMENT_LIGHT, message.data[0] & LIGHT_INSTR);
+				break;
+
+#endif
+// *****************
+
 		}
 	}
 }
@@ -258,6 +323,21 @@ void MODULE::_send(void) {
 
 		can_com.send(buffer, 7, CAN_ID_DRIVE);
 
+		// send light
+		buffer[0] = _lights.get();
+
+
+// ****************
+// combine light switch with second light switch
+// bitwise or combination
+#ifdef ANALOG_LIGHT_1_SWITCH
+		buffer[0] |= _lights_1.get();
+#endif
+// ****************
+
+		can_com.send(buffer, 1, CAN_ID_LIGHT);
+
+		// send signal
 		buffer[0] = _lights.get();
 		can_com.send(buffer, 1, CAN_ID_LIGHT);
 	}
@@ -380,6 +460,49 @@ void MODULE::_light(void) {
 			break;
 
 	}
+
+
+#ifdef ANALOG_LIGHT_1_SWITCH
+
+	switch (_light_1_switch.get()) {
+
+		// light OFF
+		case LIGHT_OFF:
+			_lights_1.set(0);
+			break;
+
+		// light LOW
+		case LIGHT_LOW:
+			_lights_1.set(0);
+			_lights_1.set_flag(LIGHT_MAIN, true);
+
+			_lights_1.set_flag(LIGHT_INSTR, true);
+			_lights_1.set_flag(LIGHT_LOW, true);
+			break;
+
+		// light LOW + TRAIN
+		case LIGHT_LOW_TRAIN:
+			_lights_1.set(0);
+			_lights_1.set_flag(LIGHT_MAIN, true);
+
+			_lights_1.set_flag(LIGHT_INSTR, true);
+			_lights_1.set_flag(LIGHT_LOW, true);
+			_lights_1.set_flag(LIGHT_TRAIN, true);
+			break;
+
+		// light HIGH + TRAIN
+		case LIGHT_HIGH_TRAIN:
+			_lights_1.set(0);
+			_lights_1.set_flag(LIGHT_MAIN, true);
+
+			_lights_1.set_flag(LIGHT_INSTR, true);
+			_lights_1.set_flag(LIGHT_HIGH, true);
+			_lights_1.set_flag(LIGHT_TRAIN, true);
+			break;
+
+	}
+#endif
+
 }
 
 

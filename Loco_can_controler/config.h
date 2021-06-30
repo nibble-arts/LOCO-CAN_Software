@@ -25,7 +25,8 @@
 // Valid board versions:
 //		BOARD_V_1_0
 //		BOARD_V_1_2
-//		BOARD_V_2_0
+//      BOARD_UNIV_V_2_1
+//      BOARD_WIFI_V_2_1
 // =====================================
 
 
@@ -34,10 +35,11 @@
 // select board version
 //
 // =====================================
-#define BOARD_VERSION BOARD_V_1_0
+#define BOARD_VERSION BOARD_WIFI_V_2_1
 #define SOFTWARE_VERSION 0x0100
 #define MODULE_MAX_SETTINGS 23
 
+#include "module_board.h"
 
 // =====================================
 //
@@ -64,6 +66,12 @@
 #define LIGHT_LOW_TRAIN 680
 #define LIGHT_HIGH_TRAIN 1023
 
+#ifdef ANALOG_LIGHT_1_SWITCH
+    #define LIGHT_1_OFF 0
+    #define LIGHT_1_LOW 338
+    #define LIGHT_1_LOW_TRAIN 680
+    #define LIGHT_1_HIGH_TRAIN 1023
+#endif
 
 // max settings mytes
 #define EEPROM_MAX_DATA 14
@@ -71,7 +79,6 @@
 
 // =====================================
 // include module
-#include "module_board.h"
 #include "module.h"
 
 

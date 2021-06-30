@@ -19,11 +19,11 @@
 // mid priority values 
 #define CAN_ID_SPEED 0x200
 #define CAN_ID_DIR 0x210
-#define CAN_ID_HORN 0x220
+#define CAN_ID_SIGNAL 0x220
 #define CAN_ID_TACHO 0x230
 
 // low priority values
-#define CAN_ID_VOLTAGE 0x300
+#define CAN_ID_VOLTAGE 0x300 // main supply voltage
 #define CAN_ID_MOTOR_VOLTAGE 0x310
 #define CAN_ID_BATT_VOLTAGE 0x320
 

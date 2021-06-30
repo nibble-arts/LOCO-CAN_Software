@@ -40,62 +40,6 @@ Standard FTDI Interface to flash software updates
 | 5   | **GND**   |
 
 
-# LOCO-Control
-The controller module provides connectors to apply pots, switches, leds and meters in an easy way to implement an own controller design.
-
-The analog switch inputs use a potentiometer or a switch with applied resistors to change the voltage on the analog input. The software can learn the distinct positions and map them to discrete switch positions.
-
-The connectors for volt and ampere display provide either an analog value (PWM) or a model servo signal. The servo can be used to build a analog gauge for display.
-
-## Hardware version V2.0a-s
-
-### Power out
-The 5-Volt output can be used to supply additional electronic inside the controler with up to 500mA.
-
-**2-pin JST-PH connector**
-| pin |      |
-|:----|:-----|
-|  1  | +5V  |
-|  2  | GND  |
-
-### Control Input
-**3-pin JST-PH connectors**
-| DRIVE    | BREAK    | MAINS    | DIR       | TALLY   |
-|:---------|:---------|:---------|:----------|:--------|
-| 1	GND	   | 1 GND    | 1 GND	 | 1 GND     | 1 RED   |
-| 2	POT    | 2 POT    | 2 SWITCH | 2 SWITCH  | 2 GND   |
-| 3 VCC	   | 3 VCC    | 3 VCC    | 3 VCC     | 3 GREEN |
-
-### Meters
-**2x3 pinheader**
-*VOLTMETER		AMMETER*
-| 1 Volt   | 2 Ampere |
-|:---------|:---------|
-| 3 VCC    | 4 VCC    |
-| 5 GND    | 6 GND    |
-
-### Auxilary IO
-**6-pin JST-PH connector**
-*Aux I/O*
-| pin |             |
-|:----|:------------|
-| 1   | IO1         |
-| 2   | IO2         |
-| 3   | IO3         |
-| 4   | IO4         |
-| 5   | Analog 1    |
-| 6   | Analog 2    |
-
-### FTDI Interface
-| V2.0     | V2.0a     |
-|:---------|:----------|
-| 1 DTS    | **1 DTS** |
-| 2 **TX** | **2 RX**  |
-| 3 **RX** | **3 TX**  |
-| 4 3V3    | **4 3V3** |
-| 5 GND    | **5 GND** |
-
-
 # LOCO-Motor
 With the LOCO-Motor module all types of power drivers can be acceesed via the CAN bus. The setup of the motor software can be adapted to a wide variety of motor control drivers. With the additional light and horn outputs a locomotive control can be set up with a control and a motor module.
 
@@ -330,6 +274,77 @@ The splitbox is a tiny module that split up the CAN-bus line with three connecto
 For details ot the connector pinouts see the connector section below.
 
 **Power for the system has to be provided via a motor module or the splitboxes. It is not recommended to use the CAN connector for this purpose!**
+
+
+# LOCO-Control-Adapter
+The controller module provides connectors to apply pots, switches, leds and meters in an easy way to implement an own controller design.
+
+The analog switch inputs use a potentiometer or a switch with applied resistors to change the voltage on the analog input. The software can learn the distinct positions and map them to discrete switch positions.
+
+The connectors for volt and ampere display provide either an analog value (PWM) or a model servo signal. The servo can be used to build a analog gauge for display.
+
+The control module consists of an universal module providing CAN-bus connectors and an optional wireless connection (LOCO-Universal, LOCO_WiFi), that is piggipacket on a adapter board. The adapter creates a +5 Volt supply for all controls from the CAN-supply lines and offers JST-PH connectors for the switches, pots and LEDs.
+
+## Hardware version V2.1
+
+
+### Power out
+The 5-Volt supply output can be used to supply additional electronic inside the controler with up to 500mA.
+
+### DRIVE / BREAK / POWER
+Three pot inputs for drive, break and power regulators.
+**3-pin JST-PH connectors**
+| DRIVE    | BREAK    | POWER    |
+|:---------|:---------|:---------|
+| 1	GND	   | 1 GND    | 1 GND	 |
+| 2	POT    | 2 POT    | 2 SWITCH |
+| 3 VCC	   | 3 VCC    | 3 VCC    |
+
+### DIR / MAINS
+Two analog switch inputs for direction and mains.
+**3-pin JST-PH connectors**
+| DIR      | MAINS    |
+|:---------|:---------|
+| 1	GND	   | 1 GND    |
+| 2	POT    | 2 POT    |
+| 3 VCC	   | 3 VCC    |
+
+### V-BATT / V-MOT / AMP
+Three servo/analog outputs for analog meters. The output type is either a model servo or a pwm signal.
+**3-pin JST-PH connectors**
+| BATTERY  | MOTOR    | AMPERE   |
+|:---------|:---------|:---------|
+| 1	OUT    | 1 OUT    | 1 OUT    |
+| 2 VCC	   | 2 VCC    | 1 VCC    |
+| 3	GND	   | 3 GND    | 1 GND    |
+
+### STATUS
+The dual color LED (green/red with common GND) is conneted to this port.
+**3-pin JST-PH connectors**
+| pin | usage |
+|:----|:------|
+| 1   | red   |
+| 2   | GND   |
+| 3   | green |
+
+### INST
+The instrument light output provides a +5V/+12 Volt supply for lighting the instruments. It is powered by the CAN-bus line and therefore can only use the maximum of 5 Ampere. The FET-ouput is designet to switch this current, but it is recommended to use LEDs with much less power consumption, especially when the WiFi controller is powered by a battery.
+To select the voltage a connection between the voltage and the center off jumper JP1 has to be soldered.
+**3-pin JST-PH connectors**
+| pin | usage      |
+|:----|:-----------|
+| 1   | +5V/+12V   |
+| 2   | Lights     |
+| 3   | GND        |
+
+### SIGNAL
+The signal connector has two inputs for a high/low horn operation. Setting both inputs to low, activates the bell function.
+**3-pin JST-PH connectors**
+| pin | usage |
+|:----|:------|
+| 1   | high  |
+| 2   | low   |
+| 3   | GND   |
 
 
 # Hardware

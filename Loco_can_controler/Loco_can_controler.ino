@@ -81,9 +81,21 @@ void setup() {
 
 
 	// register can filters
-	can_com.register_filter(CAN_ID_MASK, CAN_ID_LIGHT_CURRENT); // light
+	can_com.register_filter(CAN_ID_MASK, CAN_ID_LIGHT_CURRENT); // light current
 	can_com.register_filter(CAN_ID_MASK, CAN_ID_STATUS); // drive status
 	can_com.register_filter(CAN_ID_MASK, CAN_ID_DRIVE);	// drive commands from other controllers
+
+
+    // *****************
+    // OPTIONAL - depends on the board version
+    // init instrument light if output is present
+    #ifdef INSTRUMENT_LIGHT
+        can_com.register_filter(CAN_ID_MASK, CAN_ID_LIGHT); // light for instruments
+
+        pinMode(INSTRUMENT_LIGHT, OUTPUT);
+        digitalWrite(INSTRUMENT_LIGHT, LOW);
+    #endif
+    // *****************
 
 	can_com.register_filter(CAN_SETUP_MASK, CAN_ID_REPLY);
 	can_com.register_filter(CAN_REPLY_MASK, CAN_ID_REPLY);

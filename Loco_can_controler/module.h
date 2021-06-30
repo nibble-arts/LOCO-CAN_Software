@@ -56,12 +56,26 @@ class MODULE {
 		ANALOGSWITCH _dir_switch;
 		ANALOGSWITCH _light_switch;
 
+		#ifdef ANALOG_LIGHT_1_SWITCH
+			ANALOGSWITCH _light_1_switch;
+			FLAGS _lights_1;
+		#endif
+
 		FLAGS _status;
 		FLAGS _switches;
 		FLAGS _lights;
 
+		FLAGS _light_status; //can light status
+
 		METER _meter_volt;
-		METER _meter_amp;
+
+		#ifdef METER_AMP
+			METER _meter_amp;
+		#endif
+
+		#ifdef METER_MOTOR_VOLT
+			METER _meter_motor;
+		#endif
 
 		INTELLILED _status_led;
 
