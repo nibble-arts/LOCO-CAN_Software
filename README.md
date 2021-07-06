@@ -1,7 +1,7 @@
 
 # LOCO-CAN
 
-The hardware schematics and PCB layouts are managed in the [LOCO-CAN_Harware](https://github.com/nibble-arts/LOCO-CAN_Hardware) repository.
+The hardware schematics and PCB layouts are managed in the [LOCO-CAN](https://github.com/nibble-arts/LOCO-CAN_Hardware) repository.
 
 The LOCO-CAN-system is designed for the use is miniature railway vehicles. It provides a CAN-bus connecting the different modules inside a locomotive, but also between vehicles in a train.
 
