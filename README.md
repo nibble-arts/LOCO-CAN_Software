@@ -1,6 +1,6 @@
 # LOCO-CAN
 
-The hardware schematics and PCB layouts are managed in the [LOCO-CAN_Harware](https://github.com/nibble-arts/LOCO-CAN_Hardware) repository.
+The hardware schematics and PCB layouts are managed in the [LOCO-CAN](https://github.com/nibble-arts/LOCO-CAN_Hardware) repository.
 
 The system is still under developement.
 
