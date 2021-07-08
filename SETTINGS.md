@@ -6,6 +6,13 @@ The paramters are addressed by an 8-bit address, where the value 0x00 and 0xFF a
 
 The address 0x00 is used to access the module name, while the 0xFF can not be used, because the address for write and reply messages is part of the 8 lower bits of the 11-bit CAN-identifier and the id 0x7FF is reserved for request messages.
 
+## Module Setting Definitions
+
+Each module has an eight bit identification code containing of 3 bits for the module group identification, 4 bits for the module type inside the group and the hightest bit to indicate wireless capability if set to 1.
+
+
+
+	Controller 			0x1n
 ## Settings Protocol
 
 To change the settings of the module the highest CAN identifiers in the range between 0x700 and 0x7FF are used. The messages are devided in three groups for requests, replys and setup data.

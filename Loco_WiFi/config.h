@@ -11,6 +11,10 @@
 /*
  * list of boards
  */
+#define BOARD_WIFI_V_2_1 1 // WIFI V2.1
+#define BOARD_UNIV_V_2_1 2 // UNIVERSIAL V2.1
+
+
 #define BOARD_DEVKIT_V1 1
 #define BOARD_LOLIN_D32 2
 #define BOARD_CONTROL_V2.0

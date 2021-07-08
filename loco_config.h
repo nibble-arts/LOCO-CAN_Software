@@ -34,28 +34,6 @@
 
 
 // =====================================
-//
-// versions definition
-//
-// =====================================
-
-// V1.0
-#define BOARD_V_1_0 1
-
-// V1.2
-#define BOARD_V_1_2 2
-
-// V2.0
-#define BOARD_V_2_0 3
-
-// WIFI V2.1
-#define BOARD_WIFI_V_2_1 4
-
-// UNIVERSIAL V2.1
-#define BOARD_UNIV_V_2_1 5
-
-
-// =====================================
 // Global settings
 #define RED INTELLILED_RED
 #define GREEN INTELLILED_GREEN
@@ -94,35 +72,31 @@
 // =====================================
 
 // =====================================
-//
-// INPUT MODULES
+// Each module type is identified by a type group and a sub identifier.
+// The highest bit of the 8 bit code indicates wireless ability.
+// Therefore 8 groups with 8 subgroups are possible for wired and wireless modules.
 
-// CABLE CONTROLLER
-#define MODULE_CONTROLLER 0x10
+// MODULES TYPE GROUP
+// 0x0n CONTROLLER
+#define MODULE_CONTROLLER 0x10 // wired controller module
+#define MODULE_CONTROLLER_WIFI 0x90 // WiFi controller module
 
+// 0x1n SENSOR
+#define MODULE_SENSOR 0x20 // UI Sensor module
 
+// 0x2n SWITCH
+#define MODULE_SWITCH_LIGHT 0x30
 
-// WIFI CONTROLLER
-#define MODULE_WIFI 0x11
+// 0x3n ACTUATOR
+#define MODULE_AKTUATOR_SERVO 0x40
 
+// 0x4n
 
-// =====================================
-//
-// SENSOR MODULES
-#define MODULE_SENSOR 0x20
+// 0x5n
 
+// 0x6n
 
-// =====================================
-//
-// ACTUATOR MODULES
-
-// MOTOR DRIVER
-#define MODULE_MOTOR 0x30
-
-
-// LIGHT MODULE
-#define MODULE_LIGHT 0x31
-#define MODULE_MAX_SETTINGS 14
+// 0x7n
 
 
 // =====================================

@@ -45,15 +45,11 @@
 //  13		backward_light 7
 
 
+#include "config.h"
+#include "module.h"
 
 #include "RokkitHash.h"
-
-#include "config.h"
-#include "can_com.h"
-// #include "can_protocol.h"
-
 #include "intelliled.h"
-// #include "simpletimeout.h"
 
 
 MODULE module;

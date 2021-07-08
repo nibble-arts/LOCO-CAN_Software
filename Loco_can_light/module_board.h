@@ -12,6 +12,10 @@
 
 #include "config.h"
 
+#ifndef BOARD_VERSION
+	#error "no board defined"
+#endif
+
 /*
  * The bus connector offers seven IO-Lines depending on the used board
  */
@@ -43,6 +47,7 @@
 
 	#define CAN_STATUS_LED 8
 
+	#define ANALOG_RESOLUTION 10
 
 	// digital intput/output
 	// not used
@@ -80,6 +85,8 @@
 #elif BOARD_VERSION == BOARD_V_1_2
 
 	#define CAN_STATUS_LED 7
+
+	#define ANALOG_RESOLUTION 10
 
 	#define UI_MAX_VOLT 4
 	#define UI_MAX_CURR 1
@@ -125,6 +132,7 @@
 
 	#define CAN_STATUS_LED 8
 
+	#define ANALOG_RESOLUTION 10
 
 	// digital intput/output
 	// not used

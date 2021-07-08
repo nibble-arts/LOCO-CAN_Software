@@ -7,18 +7,10 @@
  */
 
 
-#include "config.h"
-
 #include "module.h"
-#include "eeprom_setup.h"
 
 #include "can_com.h"
 #include "can_protocol.h"
-
-#include "current.h"
-#include "intelliled.h"
-#include "simpletimeout.h"
-#include "flags.h"
 
 
 // init extern classes
@@ -42,7 +34,7 @@ void MODULE::begin(void) {
 
 
 	// init light setup in EEPROM
-	_settings.begin(can_com.uuid(), SOFTWARE_VERSION, MODULE_LIGHT, MODULE_MAX_SETTINGS);
+	_settings.begin(&can_com, SOFTWARE_VERSION, MODULE_LIGHT, MODULE_MAX_SETTINGS);
 
 
 	#ifdef DEBUG
@@ -72,6 +64,13 @@ void MODULE::begin(void) {
 		_leds[_i].off();
 	}
 
+
+	// set current class
+	_current.begin(C1);
+	_current.setResolution(ANALOG_RESOLUTION);
+	_current.calibrate(1);
+
+
 	Serial.println("Light module started");
 
 }
@@ -96,7 +95,7 @@ void MODULE::update(void) {
 	// send current
 	if (_send_timeout.update()) {
 
-		current = analogRead(C1);
+		current = _current.get();
 
 		// current data
 		data[0] = current >> 8;

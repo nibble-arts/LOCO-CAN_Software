@@ -35,8 +35,8 @@
  */
 
 #include "config.h"
+#include "module.h"
 
-#include "can_com.h"
 #include "intelliled.h"
 
 

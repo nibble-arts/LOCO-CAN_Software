@@ -26,6 +26,8 @@
 #define CAN_ID_VOLTAGE 0x300 // main supply voltage
 #define CAN_ID_MOTOR_VOLTAGE 0x310
 #define CAN_ID_BATT_VOLTAGE 0x320
+#define CAN_ID_BATT_1_VOLTAGE 0x321
+#define CAN_ID_BATT_2_VOLTAGE 0x322
 
 // command values
 #define CAN_ID_DRIVE 0x400

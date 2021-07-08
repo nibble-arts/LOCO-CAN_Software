@@ -13,6 +13,8 @@
 #include <Arduino.h>
 
 #include "loco_config.h"
+#include "can_protocol.h"
+#include "can_com.h"
 
 
 // =====================================
@@ -23,10 +25,12 @@
 // defined in module_board.h
 //
 // Valid board versions:
-//		BOARD_V_1_0
-//		BOARD_V_1_2
-//      BOARD_UNIV_V_2_1
-//      BOARD_WIFI_V_2_1
+// 
+#define BOARD_V_1_0 1 // V1.0
+#define BOARD_V_1_2 2 // V1.2
+#define BOARD_V_2_0 3 // V2.0
+#define BOARD_WIFI_V_2_1 4 // WIFI V2.1
+#define BOARD_UNIV_V_2_1 5 // UNIVERSIAL V2.1
 // =====================================
 
 
@@ -35,9 +39,9 @@
 // select board version
 //
 // =====================================
+
 #define BOARD_VERSION BOARD_WIFI_V_2_1
 #define SOFTWARE_VERSION 0x0100
-#define MODULE_MAX_SETTINGS 23
 
 #include "module_board.h"
 
@@ -48,38 +52,73 @@
 // =====================================
 
 // All local definitions are placed here
-#define VAL_MAX 1023
-#define SPEED_MID_HIGH 582
-#define SPEED_MID_LOW 227
+// ESP32 12-bit ADC
+#if BOARD_VERSION == BOARD_WIFI_V_2_0 || BOARD_VERSION == BOARD_WIFI_V_2_1
 
-// analog switches
-#define MAINS_OFF 0
-#define MAINS_ON 512
-#define MAINS_PUMP 1023
+    #define ANALOG_VAL_MAX 4095
+    #define SPEED_MID_HIGH 2328
+    #define SPEED_MID_LOW 908
 
-#define DIR_REVERSE 0
-#define DIR_MID 512
-#define DIR_FORWARD 1023
+    // analog switches
+    #define MAINS_OFF 0
+    #define MAINS_ON 1023
+    #define MAINS_PUMP 4095
 
-#define LIGHT_OFF 0
-#define LIGHT_LOW 338
-#define LIGHT_LOW_TRAIN 680
-#define LIGHT_HIGH_TRAIN 1023
+    #define DIR_REVERSE 0
+    #define DIR_MID 1023
+    #define DIR_FORWARD 4095
 
-#ifdef ANALOG_LIGHT_1_SWITCH
-    #define LIGHT_1_OFF 0
-    #define LIGHT_1_LOW 338
-    #define LIGHT_1_LOW_TRAIN 680
-    #define LIGHT_1_HIGH_TRAIN 1023
+    #define LIGHT_OFF 0
+    #define LIGHT_LOW 676
+    #define LIGHT_LOW_TRAIN 1360
+    #define LIGHT_HIGH_TRAIN 4095
+
+    #ifdef ANALOG_LIGHT_1_SWITCH
+        #define LIGHT_1_OFF 0
+        #define LIGHT_1_LOW 676
+        #define LIGHT_1_LOW_TRAIN 1360
+        #define LIGHT_1_HIGH_TRAIN 4095
+    #endif
+
+// Atmega 328 10-bit ADC
+#else
+
+    #define ANALOG_VAL_MAX 1023
+    #define SPEED_MID_HIGH 582
+    #define SPEED_MID_LOW 227
+
+    // analog switches
+    #define MAINS_OFF 0
+    #define MAINS_ON 1024
+    #define MAINS_PUMP 2048
+
+    #define DIR_REVERSE 0
+    #define DIR_MID 1024
+    #define DIR_FORWARD 2048
+
+    #define LIGHT_OFF 0
+    #define LIGHT_LOW 676
+    #define LIGHT_LOW_TRAIN 1360
+    #define LIGHT_HIGH_TRAIN 2048
+
+    #ifdef ANALOG_LIGHT_1_SWITCH
+        #define LIGHT_1_OFF 0
+        #define LIGHT_1_LOW 676
+        #define LIGHT_1_LOW_TRAIN 1360
+        #define LIGHT_1_HIGH_TRAIN 2048
+    #endif
 #endif
 
-// max settings mytes
-#define EEPROM_MAX_DATA 14
 
 
 // =====================================
-// include module
-#include "module.h"
+//
+// settings definitions
+//
+// =====================================
+
+// max settings mytes
+#define MODULE_MAX_SETTINGS 23
 
 
 #endif

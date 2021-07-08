@@ -21,7 +21,10 @@ extern CAN_COM can_com;
 
 void MODULE::begin(void) {
 
-
+  #ifdef DEBUG
+    Serial.println("start controller module");
+  #endif
+  
 	// SET TIMEOUTS
 	_timeout.begin(200); // drive send
 	_drive_timeout.begin(1000); // drive check timeout for activation
@@ -135,6 +138,10 @@ void MODULE::begin(void) {
 	// ===================================================================
 	// set controller inactive
 	_active = false;
+
+  #ifdef DEBUG
+    Serial.println("startup successfull");
+  #endif
 
 }
 
@@ -518,14 +525,14 @@ void MODULE::_drive_break(void) {
 
 		if (_value > SPEED_MID_HIGH) {
 
-			_drive_val = (uint16_t)map(_value, SPEED_MID_HIGH, VAL_MAX, 0, VAL_MAX);
+			_drive_val = (uint16_t)map(_value, SPEED_MID_HIGH, ANALOG_VAL_MAX, 0, ANALOG_VAL_MAX);
 			_break_val = 0;
 		}
 
 		// is break
 		if (_value < SPEED_MID_LOW) {
 
-			_break_val = (uint16_t)map(_value, SPEED_MID_LOW, 0, 0, VAL_MAX);
+			_break_val = (uint16_t)map(_value, SPEED_MID_LOW, 0, 0, ANALOG_VAL_MAX);
 			_drive_val = 0;
 		}
 

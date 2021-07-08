@@ -13,6 +13,8 @@
 #include <Arduino.h>
 
 #include "loco_config.h"
+#include "can_protocol.h"
+#include "can_com.h"
 
 
 // =====================================
@@ -23,9 +25,10 @@
 // defined in module_board.h
 //
 // Valid board versions:
-//		BOARD_V_1_0
-//		BOARD_V_1_2
-//		BOARD_V_2_0
+// 
+#define BOARD_V_1_0 1 // V1.0
+#define BOARD_V_1_2 2 // V1.2
+#define BOARD_V_2_0 3 // V2.0
 // =====================================
 
 
@@ -34,9 +37,11 @@
 // select board version
 //
 // =====================================
+
 #define BOARD_VERSION BOARD_V_2_0
 #define SOFTWARE_VERSION 0x0090
 
+#include "module_board.h"
 
 // =====================================
 //
@@ -51,9 +56,13 @@
 
 
 // =====================================
-// include module
-#include "module_board.h"
-#include "module.h"
+//
+// settings definitions
+//
+// =====================================
+
+// max settings bytes
+#define MODULE_MAX_SETTINGS 1
 
 
 #endif

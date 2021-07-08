@@ -43,6 +43,8 @@
 
 	#define CAN_STATUS_LED 7
 
+	#define ANALOG_RESOLUTION 10
+
 	#define UI_MAX_VOLT 3
 	#define UI_MAX_CURR 1
 
@@ -107,6 +109,8 @@
 
 	#define CAN_STATUS_LED 7
 
+	#define ANALOG_RESOLUTION 10
+
 	#define UI_MAX_VOLT 4
 	#define UI_MAX_CURR 1
 	#define UI_MAX_DIGITAL 8
@@ -150,6 +154,8 @@
 #elif BOARD_VERSION == BOARD_V_2_0
 
 	#define CAN_STATUS_LED 7
+
+	#define ANALOG_RESOLUTION 10
 
 	#define UI_MAX_VOLT 4
 	#define UI_MAX_CURR 1

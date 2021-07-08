@@ -8,15 +8,9 @@
 
 
 #include <Arduino.h>
+#include "config.h"
 #include "module.h"
 
-#include "config.h"
-
-#include "can_com.h"
-#include "can_protocol.h"
-
-#include "current.h"
-#include "voltage.h"
 #include "intelliled.h"
 #include "simpletimeout.h"
 
@@ -42,12 +36,12 @@ MODULE::MODULE(void) {
 
 	// set current ports
 	for (i = 0; i < UI_MAX_CURR; i++) {
-		_c[i].begin(_c_port[i]);
+		_c[i].begin(_c_port[i], ANALOG_RESOLUTION, 1);
 	}
 
 	// set voltage ports
 	for (i = 0; i < UI_MAX_VOLT; i++) {
-		_v[i].begin(_v_port[i]);
+		_v[i].begin(_v_port[i], ANALOG_RESOLUTION, 1);
 	}
 
 	// set value send timing
@@ -110,7 +104,7 @@ void MODULE::set_idx(uint8_t idx) {
 uint8_t MODULE::current(uint8_t* c) {
 
 	for (uint8_t i = 0; i < UI_MAX_CURR; i++) {
-		c[i] = (uint8_t)(_c[i].get()  / 4);
+		c[i] = _c[i].get() >> (ANALOG_RESOLUTION - 8);
 	}
 
 	return sizeof(c);
@@ -122,7 +116,7 @@ uint8_t MODULE::current(uint8_t* c) {
 uint8_t MODULE::voltage(uint8_t* v) {
 
 	for (uint8_t i = 0; i < UI_MAX_VOLT; i++) {
-		v[i] = (uint8_t)(_v[i].get()  / 4);
+		v[i] = _v[i].get() >> (ANALOG_RESOLUTION - 8);
 	}
 
 	return sizeof(v);

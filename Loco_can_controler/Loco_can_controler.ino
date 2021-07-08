@@ -47,9 +47,7 @@
 #include "Servo.h"
 
 #include "config.h"
-
-#include "can_com.h"
-#include "can_protocol.h"
+#include "module.h"
 
 #include "intelliled.h"
 #include "simpletimeout.h"
@@ -113,6 +111,7 @@ void setup() {
 
 	// start module
 	module.begin();
+
 }
 
 
@@ -120,4 +119,5 @@ void loop() {
 
 	// update module
 	module.update();
+  Serial.print(".");
 }

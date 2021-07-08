@@ -1,5 +1,5 @@
 /*
- * LOCO-CAN Voltage/Current Module configuration
+ * LOCO-CAN light Module configuration
  * 
  * @author: Thomas H Winkler
  * @copyright: 2020
@@ -9,15 +9,14 @@
 #ifndef MODULE_H
 #define MODULE_H
 
-#include <Arduino.h>
-#include <EEPROM.h>
 
 #include "config.h"
 
+#include "measure.h"
+#include "settings.h"
 #include "simpletimeout.h"
 #include "flags.h"
 #include "intelliled.h"
-#include "settings.h"
 
 
 class MODULE {
@@ -39,6 +38,8 @@ class MODULE {
 		SIMPLETIMEOUT _send_timeout;
 
 		INTELLILED _leds[6];
+
+		MEASURE _current;
 };
 
 #endif

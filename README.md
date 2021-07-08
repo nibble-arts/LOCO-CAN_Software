@@ -1,15 +1,22 @@
-
 # LOCO-CAN
 
 The hardware schematics and PCB layouts are managed in the [LOCO-CAN_Harware](https://github.com/nibble-arts/LOCO-CAN_Hardware) repository.
 
-The LOCO-CAN-system is designed for the use is miniature railway vehicles. It provides a CAN-bus connecting the different modules inside a locomotive, but also between vehicles in a train.
+The system is still under developement.
 
-The system is still under developement. The CAN-specification is defined but can be extended. Board designs are available in different versions, due to the process of evolvement. Besides bugs in the board design details like the pinout of the program interface differ between the versions.
+The LOCO-CAN-system is designed for the use is miniature railway vehicles. It is based on the CAN-bus to connect the different modules inside a locomotive, but also between vehicles in a train.
 
-## LOCO-CAN System Description
+The CAN protocol definitions can be extended to add new functionality. Board designs are available in different versions, due to the process of evolvement. Besides bugs in the board design details like the pinout of the program interface differ between the versions and the electric spezifications of the CAN-connector. The communication protocal is compatible betweet all versions.
 
-The Modules are connected with 4-pin cables using MICRO MATE-N-LOK connectors. The cables have a supply line with a voltage of +6 up to +30 Volts. The supply can be provided through some modules, that have got supply connectors (vertical 2-pin MICRO MATE-N-LOK connector). The motor module supplies directly from the motor driver.
+
+## Design
+The design is highly modular. For the simple control of aa elektric locomotive only a control and a motor module is needed. When using the latest motor module version values for motor voltage and battery voltage is sent to the can bus. The control module has the ability to connect meters for display of this values.
+
+The structure with a bus system makes it easy to expand the contruction with additional functions. New modules, i.e. for light, controlling servos or measuring corrent, only need to be hooked into the CAN-line.
+
+## Power Supply
+
+The Modules are connected with 4-pin cables using MICRO MATE-N-LOK connectors. The cables have a supply line with a voltage of +6 up to +30 Volts. The supply can be provided through the modules that have got supply connectors (vertical 2-pin MICRO MATE-N-LOK connector). The motor module supplies directly from the motor driver.
 
 All supply connectors have a diode, so the input voltages on places in the network can be different. The supply voltage on the bus will be the highest value. The operation voltage for internal function of the modules is created onboard.
 
@@ -17,15 +24,11 @@ So it is possible to connect two locomotives with 12 Volt and 24 Volt batteries 
 
 **It is not recommended to use the CAN-Connector for supply of the bus.**
 
-## ICP SDI pads
-To flash the bootloader on Atmega chips latter versions provide three pads to access the SDI port of the MCU. A jumper in the CS line between the MCU and the CAN controller has to be closed after the flash process.
+# Configuration
+**This functionality is not yet implemented**
+The modules are shipped with a standard configuration like the assignment of the light module outputs to the light stati or the potentiometer value for neutral position of the throtle. The paramters can be adjusted using the webinterface of a WiFi-modul. Connecting with a laptop or smartphone gives access to a user-friendly interface for this task.
 
-The hardware versions with the SDI pads are marked with a letter s at the end of the version string.
-
-# Modules
-All modules are equipped with two 4-pin CAN connectors. The following modules are available or in developement:
-
-## Interface definitions
+## Software Updates
 The pinout of the FTDI interface for flashing new software differs in the early versions. The standard pinout will be implemented in all revisions, divergent pinouts are listed with the version descriptions.
 
 All versions are compatible on the CAN-bus, the differences are only in the expansion ports.
@@ -39,9 +42,48 @@ Standard FTDI Interface to flash software updates
 | 4   | **4 3V3** |
 | 5   | **GND**   |
 
+## ICP SDI pads
+To flash the bootloader on Atmega chips latter versions provide three pads to access the SDI port of the MCU. A jumper in the CS line between the MCU and the CAN controller has to be closed after the flash process.
+
+The hardware versions with the SDI pads are marked with a letter s at the end of the version string.
+
+
+# Modules
+All modules are equipped with two CAN connectors. The following modules are available or in developement:
+
 
 # LOCO-Motor
 With the LOCO-Motor module all types of power drivers can be acceesed via the CAN bus. The setup of the motor software can be adapted to a wide variety of motor control drivers. With the additional light and horn outputs a locomotive control can be set up with a control and a motor module.
+
+The internal motor voltage is sent as CAN_ID_MOTOR_VOLTAGE to the bus as well as two battery measurement inputs, that provide the state of up to two batteries connected in series.
+
+## V2.2-s
+In the version V2.2 a connector for battery voltage measurement is implemented. The two leads can be used to measure two batteries connected in series.
+
+### Motor driver
+Plug: MATE-N-LOK 1-794617-0
+Jack: MATE-N-LOK 4-794618-0
+
+| pin | usage       | pin | usage       |
+|:----|:------------|:----|:------------|
+| 1   | +12V IN     | 2   | Light       |               
+| 3   | DRIVE       | 4   | HORN        |
+| 5   | BREAK       | 6   | MOTOR VOLT+ |
+| 7   | FORWARD     | 8   | MOTOR VOLT- |
+| 9   | REVERSE     | 10  | GND         |
+
+### Battery voltage
+In the standard settings battery voltage 1 is relative to GND, battery voltage 2 relative to battery 1. The voltage message sends three values for overall voltage (CAN_ID_BATT_VOLTAGE), voltage 1 (CAN_ID_BATT_1_VOLTAGE) and voltage 2 (CAN_ID_BATT_2_VOLTAGE).
+
+Jack: 2-pin JST-PH connector
+| pin | usage     |
+|:----|:----------|
+| 1   | Battery 1 |
+| 2   | Battery 2 |
+
+### FTDI Interface
+Standard 5-pin FTDI Interface
+
 
 ## V2.1a/V2.1b-s
 The versions only differ in the pinout of the FDTI-interface.
@@ -372,7 +414,7 @@ The CAN-bus is found on all modules, even the WIFI. It connects all modules and 
 
 **4-pin 2x2**
 Plug: MATE-N-LOK 794617-4
-Jach: MATE-N-LOK 3-794618-4
+Jack: MATE-N-LOK 3-794618-4
 
 | pin | usage                      |
 |:---:|:---------------------------|

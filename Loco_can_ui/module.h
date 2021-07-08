@@ -13,9 +13,7 @@
 
 #include "config.h"
 #include "simpletimeout.h"
-
-#include "current.h"
-#include "voltage.h"
+#include "measure.h"
 
 
 class MODULE {
@@ -35,8 +33,8 @@ class MODULE {
 		uint8_t voltage(uint8_t*);
 		bool send(uint8_t*, uint8_t, long);
 		
-		CURRENT _c[UI_MAX_CURR];
-		VOLTAGE _v[UI_MAX_VOLT];
+		MEASURE _c[UI_MAX_CURR];
+		MEASURE _v[UI_MAX_VOLT];
 
 		SIMPLETIMEOUT _curr_timeout;
 		SIMPLETIMEOUT _volt_timeout;
