@@ -119,5 +119,5 @@ void loop() {
 
 	// update module
 	module.update();
-  Serial.print(".");
+
 }

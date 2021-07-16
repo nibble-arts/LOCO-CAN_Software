@@ -30,7 +30,6 @@ void MODULE::begin(void) {
 	_drive_timeout.begin(1000); // drive check timeout for activation
 	_heartbeat.begin(500); // set heartbeat
 
-
 	// begin IO
 	pinMode(ANALOG_DIR_SWITCH, INPUT);
 
@@ -80,7 +79,6 @@ void MODULE::begin(void) {
 		_light_1_switch.learn(LIGHT_1_HIGH_TRAIN);
 	#endif
 
-
 	// ===================================================================
 	// start Analog meters
 	_meter_volt.begin(METER_VOLT, METER_TYPE_SERVO);
@@ -106,6 +104,7 @@ void MODULE::begin(void) {
 	#ifdef METER_MOTOR_VOLT
 		_meter_motor.set(1000);
 	#endif
+
 
 	// show startup on status led
 	_status_led.color(RED);
@@ -210,6 +209,7 @@ void MODULE::_receive(CAN_MESSAGE message) {
 
 	if (filter = can_com.read(&message)) {
 
+		// Serial.println(filter);
 
 		// set _status
 		switch (filter) {
@@ -558,14 +558,14 @@ void MODULE::_led() {
 	// CAN is dead
 	if (!can_com.alive()) {
 		_status_led.color(RED);
-		_status_led.flash(200);
+		_status_led.flash(STATUS_ERROR_FLASH);
 	}
 
 
 	// ERROR status
 	else  if (_status.get_flag(ERROR_FLAG)) {
 		_status_led.color(RED);
-		_status_led.blink(500);
+		_status_led.blink(STATUS_ERROR_BLINK);
 	}
 
 
@@ -592,13 +592,13 @@ void MODULE::_led() {
 		// drive not ready (3)
 		else {
 			_status_led.color(YELLOW);
-			_status_led.blink(500);
+			_status_led.blink(STATUS_READY_BLINK);
 		}
 
 		// zero position error
 		if (_status.get_flag(ERROR_FLAG)) {
 			_status_led.color(RED);
-			_status_led.blink(500);
+			_status_led.blink(STATUS_ERROR_BLINK);
 		}
 	}
 
@@ -617,7 +617,7 @@ void MODULE::_led() {
 			_status_led.color(RED);
 		}
 
-		_status_led.flash(2000);
+		_status_led.flash(STATUS_OFF_FLASH);
 	}
 
 

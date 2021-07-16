@@ -34,6 +34,7 @@ The main routine calles the module update method.
                         #include "module_board.h"
                         
     module.h            #include "config.h"
+                        #include "module_settings.h"
                         necessary libraries for the module
                         
     All additional classes should inluce "config.h"

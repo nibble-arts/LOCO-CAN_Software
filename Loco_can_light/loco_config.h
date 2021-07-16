@@ -63,7 +63,7 @@
 
 #define MODULE_NAME_LENGTH 15
 
-#define HEARTBEAT 500
+#define HEARTBEAT 500x
 
 // =====================================
 // setup data in EEPROM

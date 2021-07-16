@@ -64,37 +64,6 @@
 //
 // =====================================
 
-// max settings bytes
-#define MODULE_MAX_SETTINGS 14
-
-
-struct SETUP_DATA {
-    // use direction signal to selećt forward or reverse
-    SETTINGS_BOOL   dir;
-
-    // forward mapping
-    SETTINGS_8   main_forw;
-    SETTINGS_8   train_forw;
-    SETTINGS_8   cab_forw;
-    SETTINGS_8   instr_forw;
-    SETTINGS_8   back_forw;
-    SETTINGS_8   high_forw;
-    SETTINGS_8   low_forw;
-    SETTINGS_8   posit_forw;
-
-    // reverse mapping
-    SETTINGS_8   main_rew;
-    SETTINGS_8   train_rew;
-    SETTINGS_8   cab_rew;
-    SETTINGS_8   instr_rew;
-    SETTINGS_8   back_rew;
-    SETTINGS_8   high_rew;
-    SETTINGS_8   low_rew;
-    SETTINGS_8   posit_rew;
-};
-
-// SETUP_DATA abc;
-
-// einstellungen.type.name = "Modultype";
+#include "module_settings.h"
 
 #endif

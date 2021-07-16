@@ -27,32 +27,46 @@ FLAGS status;
 // start module
 void MODULE::begin(void) {
 
+	uint8_t i;
 	uint8_t ports[] = {LIGHT1, LIGHT2, LIGHT3, LIGHT4, LIGHT5, LIGHT6};
+	uint8_t count = (uint8_t)sizeof(settings_declaration);
+	VALUE value;
 
 	// start send timing
 	_send_timeout.begin(LIGHT_CURRENT_TIME);
 
 
-	// init light setup in EEPROM
-	_settings.begin(&can_com, SOFTWARE_VERSION, MODULE_LIGHT, MODULE_MAX_SETTINGS);
+	// init settings class
+	_settings.begin(&can_com, SOFTWARE_VERSION, MODULE_LIGHT, count, MODULE_NAME_LENGTH, CAN_ID_REQUEST, CAN_ID_REPLY, CAN_ID_SETUP);
+
+	// add setting values from declaration
+	for (i = 0; i < count; i++) {
+		_settings.register_setting(settings_declaration[i]);
+	}
+
+	// init data storage and load EEPROM data
+	_settings.load();
 
 
+	// show settings
 	#ifdef DEBUG
+
 		Serial.println();
 		Serial.print("module name: '");
-		Serial.print(_settings.name());
+		Serial.print(_settings.getName());
 		Serial.println("'");
 
 		Serial.println("output settings: ");
 
-		for (_i = 0; _i < 7; _i++) {
+
+		for (_i = 0; _i < count; _i++) {
 
 			Serial.print(_i);
-			Serial.print(" forwards: ");
-			Serial.print(_settings.getByte(_i), BIN);
+			Serial.print(": 0b");
+			// Serial.print((uint16_t)_settings.getValue<uint8_t>(_i), BIN);
 
-			Serial.print(" backwards: ");
-			Serial.println(_settings.getByte(_i + 7), BIN);
+			Serial.print(", 0x");
+			// Serial.println((uint8_t)_settings.getValue<uint8_t>(_i), HEX);
 		}
 
 	#endif
@@ -80,12 +94,13 @@ void MODULE::begin(void) {
 void MODULE::update(void) {
 
 
-	uint8_t size;
+	// uint8_t size;
+	// uint8_t idx;
+
 	uint8_t data[8];
 	uint8_t lights;
 	uint16_t current;
 	uint16_t uuid;
-	uint8_t idx;
 	uint16_t filter;
 
 	uint8_t name[MODULE_NAME_LENGTH];
@@ -119,6 +134,8 @@ void MODULE::update(void) {
 			// light data
 			case CAN_ID_LIGHT:
 				_switches.set(message.data[0]);
+
+				// TODO set outputs by mapping
 				break;
 
 			// loco status data
@@ -136,39 +153,39 @@ void MODULE::update(void) {
 		if (filter == CAN_ID_REQUEST) {
 
 
-			// global request
-			if (message.size == 1) {
-				_settings.sendInfoReply(MODULE_LIGHT);
-			}
+			// // global request
+			// if (message.size == 1) {
+			// 	_settings.sendInfoReply(MODULE_LIGHT);
+			// }
 
-			// addressed request
-			else {
+			// // addressed request
+			// else {
 
-				// got request
-				uuid = char2int(message.data[0], message.data[1]);
+			// 	// got request
+			// 	uuid = char2int(message.data[0], message.data[1]);
 
-				// check for own uuid
-				if (can_com.uuid() == uuid) {
+			// 	// check for own uuid
+			// 	if (can_com.uuid() == uuid) {
 
-					switch(message.size) {
+			// 		switch(message.size) {
 
-						// info request
-						case 2:
-							_settings.sendInfoReply(MODULE_LIGHT);
-							break;
+			// 			// info request
+			// 			case 2:
+			// 				_settings.sendInfoReply(MODULE_LIGHT);
+			// 				break;
 
-						// single value request
-						case 3:
-							_settings.sendValueReply(message.data[2], 1);
-							break;
+			// 			// single value request
+			// 			case 3:
+			// 				_settings.sendValueReply(message.data[2], 1);
+			// 				break;
 
-						// multiple value request
-						case 4:
-							_settings.sendValueReply(message.data[2], message.data[3]);
-							break;
-					}
-				}
-			}
+			// 			// multiple value request
+			// 			case 4:
+			// 				_settings.sendValueReply(message.data[2], message.data[3]);
+			// 				break;
+			// 		}
+			// 	}
+			// }
 		}
 
 
@@ -178,36 +195,36 @@ void MODULE::update(void) {
 		//
 		if (filter == CAN_ID_SETUP) {
 
-			// got setup data
-			uuid = char2int(message.data[0], message.data[1]);
+			// // got setup data
+			// uuid = char2int(message.data[0], message.data[1]);
 
-			// check for own uuid
-			if (can_com.uuid() && uuid) {
+			// // check for own uuid
+			// if (can_com.uuid() && uuid) {
 
-				idx = message.id & 0x7F;
+			// 	idx = message.id & 0x7F;
 
-				// set name
-				if (idx == 0) {
+			// 	// set name
+			// 	if (idx == 0) {
 
-					// collect name data
-					for (_i = 0; _i < (message.size - 2); _i++) {
-						data[_i] = message.data[_i + 3];
-					}
+			// 		// collect name data
+			// 		for (_i = 0; _i < (message.size - 2); _i++) {
+			// 			data[_i] = message.data[_i + 3];
+			// 		}
 
-					_settings.readName(data, _i, message.data[2]);
-				}
+			// 		_settings.readName(data, _i, message.data[2]);
+			// 	}
 
-				// set values
-				else if (idx > 0 && idx != 0x7F) {
-					// write values to eeprom
-					_i = 2;
-					while (_i < message.size) {
-						_settings.setByte(message.data[_i], idx + _i - 3);
+			// 	// set values
+			// 	else if (idx > 0 && idx != 0x7F) {
+			// 		// write values to eeprom
+			// 		_i = 2;
+			// 		while (_i < message.size) {
+			// 			_settings.setByte(message.data[_i], idx + _i - 3);
 
-						_i++;
-					}
-				}
-			}
+			// 			_i++;
+			// 		}
+			// 	}
+			// }
 		}
 	}
 
@@ -221,25 +238,25 @@ void MODULE::update(void) {
 	// lights only when mains is on
 	if (_status.get_flag(MAINS_FLAG)) {
 
-		// select light settings
-		for (_i = 0; _i < 7; _i++) {
+		// // select light settings
+		// for (_i = 0; _i < 7; _i++) {
 
-			if (_switches.get_flag(_i)) {
+		// 	if (_switches.get_flag(_i)) {
 
-				// get backwards light
-				// data [7-13]
-				if (_status.get_flag(DIR_FLAG)) {
-					lights |= _settings.getByte(_i + 7);
-				}
+		// 		// get backwards light
+		// 		// data [7-13]
+		// 		if (_status.get_flag(DIR_FLAG)) {
+		// 			lights |= _settings.getByte(_i + 7);
+		// 		}
 
-				// get forward light
-				// data [0-6]
-				else {
-					lights |= _settings.getByte(_i);
-				}
+		// 		// get forward light
+		// 		// data [0-6]
+		// 		else {
+		// 			lights |= _settings.getByte(_i);
+		// 		}
 
-			}
-		}
+		// 	}
+		// }
 	}
 
 

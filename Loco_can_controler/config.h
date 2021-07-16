@@ -40,7 +40,7 @@
 //
 // =====================================
 
-#define BOARD_VERSION BOARD_WIFI_V_2_1
+#define BOARD_VERSION BOARD_UNIV_V_2_1
 #define SOFTWARE_VERSION 0x0100
 
 #include "module_board.h"
@@ -119,6 +119,11 @@
 
 // max settings mytes
 #define MODULE_MAX_SETTINGS 23
+
+#define STATUS_OFF_FLASH 2000
+#define STATUS_ERROR_FLASH 750
+#define STATUS_ERROR_BLINK 1000
+#define STATUS_READY_BLINK 500
 
 
 #endif

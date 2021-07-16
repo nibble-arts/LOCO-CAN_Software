@@ -14,15 +14,6 @@ The design is highly modular. For the simple control of aa elektric locomotive o
 
 The structure with a bus system makes it easy to expand the contruction with additional functions. New modules, i.e. for light, controlling servos or measuring corrent, only need to be hooked into the CAN-line.
 
-## Power Supply
-
-The Modules are connected with 4-pin cables using MICRO MATE-N-LOK connectors. The cables have a supply line with a voltage of +6 up to +30 Volts. The supply can be provided through the modules that have got supply connectors (vertical 2-pin MICRO MATE-N-LOK connector). The motor module supplies directly from the motor driver.
-
-All supply connectors have a diode, so the input voltages on places in the network can be different. The supply voltage on the bus will be the highest value. The operation voltage for internal function of the modules is created onboard.
-
-So it is possible to connect two locomotives with 12 Volt and 24 Volt batteries without any problem. All connected units have a common GND level. When using the CAN-supply for LED-lights, it is important to have the big voltage range in mind. Best is to use a current regulator for the LEDs.
-
-**It is not recommended to use the CAN-Connector for supply of the bus.**
 
 # Configuration
 **This functionality is not yet implemented**
@@ -42,188 +33,21 @@ Standard FTDI Interface to flash software updates
 | 4   | **4 3V3** |
 | 5   | **GND**   |
 
-## ICP SDI pads
-To flash the bootloader on Atmega chips latter versions provide three pads to access the SDI port of the MCU. A jumper in the CS line between the MCU and the CAN controller has to be closed after the flash process.
+## CAN Software Updates
+**This functionality should be implemented in the future**
+A future update should bring the ability for a software update using the CAN-bus instead of the serial port. The update process is initialized and controlled by a WiFi-module. Using the webinterface the new firmware for a module type is loaded in the WiFi-module.
 
-The hardware versions with the SDI pads are marked with a letter s at the end of the version string.
+All connected modules with this type get a command to enter the CAN-bootloader. The update command sets the update bit in the CAN-bootloader as well as the count of received and saved packages in the EEPROM. If the update process is terminated, it can be restarted at the last package that was received.
+
+The CAN-bootloader communicates with the sending WiFi module using a handshake for each package. The WiFi module waits for the reply of all modules that are in the update process for the next package to be sent.
+
+When finished all updated modules reset the update bit and restart automatically.
 
 
 # Modules
-All modules are equipped with two CAN connectors. The following modules are available or in developement:
+The modules are intendet for a special use, like switching light or controlling a motor. All modules are equipped with two CAN connectors. A detailed description is found in the README.md file in the corresponding subdirectories.
 
-
-# LOCO-Motor
-With the LOCO-Motor module all types of power drivers can be acceesed via the CAN bus. The setup of the motor software can be adapted to a wide variety of motor control drivers. With the additional light and horn outputs a locomotive control can be set up with a control and a motor module.
-
-The internal motor voltage is sent as CAN_ID_MOTOR_VOLTAGE to the bus as well as two battery measurement inputs, that provide the state of up to two batteries connected in series.
-
-## V2.2-s
-In the version V2.2 a connector for battery voltage measurement is implemented. The two leads can be used to measure two batteries connected in series.
-
-### Motor driver
-Plug: MATE-N-LOK 1-794617-0
-Jack: MATE-N-LOK 4-794618-0
-
-| pin | usage       | pin | usage       |
-|:----|:------------|:----|:------------|
-| 1   | +12V IN     | 2   | Light       |               
-| 3   | DRIVE       | 4   | HORN        |
-| 5   | BREAK       | 6   | MOTOR VOLT+ |
-| 7   | FORWARD     | 8   | MOTOR VOLT- |
-| 9   | REVERSE     | 10  | GND         |
-
-### Battery voltage
-In the standard settings battery voltage 1 is relative to GND, battery voltage 2 relative to battery 1. The voltage message sends three values for overall voltage (CAN_ID_BATT_VOLTAGE), voltage 1 (CAN_ID_BATT_1_VOLTAGE) and voltage 2 (CAN_ID_BATT_2_VOLTAGE).
-
-Jack: 2-pin JST-PH connector
-| pin | usage     |
-|:----|:----------|
-| 1   | Battery 1 |
-| 2   | Battery 2 |
-
-### FTDI Interface
-Standard 5-pin FTDI Interface
-
-
-## V2.1a/V2.1b-s
-The versions only differ in the pinout of the FDTI-interface.
-
-### Motor driver
-Plug: MATE-N-LOK 1-794617-0
-Jack: MATE-N-LOK 4-794618-0
-
-| pin | usage       | pin | usage       |
-|:----|:------------|:----|:------------|
-| 1   | +12V IN     | 2   | Light       |               
-| 3   | DRIVE       | 4   | HORN        |
-| 5   | BREAK       | 6   | MOTOR VOLT+ |
-| 7   | FORWARD     | 8   | MOTOR VOLT- |
-| 9   | REVERSE     | 10  | GND         |
-
-Pins 6 and 8 are connected to the motor output to sense the voltage. Drive and break outputs provide a PWM signal to drive the power output stage.
-
-### FTDI Interface
-| V2.1a    | V2.1b     |
-|:---------|:----------|
-| 1 DTS    | **1 DTS** |
-| 2 **TX** | **2 RX**  |
-| 3 **RX** | **3 TX**  |
-| 4 3V3    | **4 3V3** |
-| 5 GND    | **5 GND** |
-
-
-# LOCO-Light
-With the light module different lights can be controlled. Each output ca drive up to 3 Ampere, when using the external +12V input with the version greater V2.1. With the V2.0 only the maximum output current of the CAN-bus can be used.
-
-
-###CAN light stati
-The can protocol supports eight light stati in out byte, that can be mapped to the six output lines in the module setup. To activate a status, the corresponding bit has to be set to 1.
-
-	bits     7      6      5      4      3      2      1      0
-	       	main  train   cab   instr   back    high   low   posit
-	       	------------------------------------------------------
-	main:	main light switch
-	train:	train lights
-	cab:		cabine light
-	instr:	instrument light
-	back:	back light
-	high:	bright spot light
-	low:		low spot light
-	posit:	position light
-
-A common current sensor returns the overall consumption of the light outputs.
-
-The versions differ in the pinout of the light connector and the FDTI-interface.
-
-## Light connector
-Degson DG308-2.54-08P-14-00AH
-or
-JST XH
-
-## Hardware version V2.0
-| pin | usage      |
-|:----|:-----------|
-| 1   | Light 1    |
-| 2   | Light 2    |
-| 3   | Light 3    |
-| 4   | Light 4    |
-| 5   | Light 5    |
-| 6   | Light 6    |
-| 7   | GND        |
-
-## Hardware version V2.1a/V2.1a-s
-| pin | usage      |
-|:----|:-----------|
-| 1   | +12V       |
-| 2   | Light 1    |
-| 3   | Light 2    |
-| 4   | Light 3    |
-| 5   | Light 4    |
-| 6   | Light 5    |
-| 7   | Light 6    |
-| 8   | GND        |
-
-### FTDI Interface
-| V2.1     | V2.1a     |
-|:---------|:----------|
-| 1 DTS    | **1 DTS** |
-| 2 **TX** | **2 RX**  |
-| 3 **RX** | **3 TX**  |
-| 4 3V3    | **4 3V3** |
-| 5 GND    | **5 GND** |
-
-
-# LOCO-Single Light
-**To do**
-A tiny module with only one CAN connector and one FET driven output for a single light. It can be used for intelligent back lights. In this case, a backlight heartbeat status can detect the train integrity.
-
-
-
-# LOCO-Sensor
-The sendor module provides four voltage inputs and a current measurement up to 30 Ampere. In addition a speed/pulse input is provided.
-
-## Hardware version V2.1/V2.1a/V2.1a-s
-The versions differ in the pinout of the FDTI-interface. Both versions V2.1a and V2.1a-s offers the SDI pads.
-
-### Voltage
-The pins can provide absolute values reffered to GND, or relative values between two pins, depending on the module setup.
-
-| pin | usage     |
-|:----|:----------|
-| 1   | Voltage 1 |
-| 2   | Voltage 2 |
-| 3   | Voltage 3 |
-| 4   | Voltage 4 |
-
-### Current
-The current measurement connectors are thwo 6mm holes outside of the casing. The direction of the current is provided as positive or negative values. The ratio of the positive direction to the connection on the pins, can be set in the setup.
-
-### Speed/pulse
-See in the Connector section below.
-
-### FTDI Interface
-| V2.1     | V2.1a     |
-|:---------|:----------|
-| 1 DTS    | **1 DTS** |
-| 2 **TX** | **2 RX**  |
-| 3 **RX** | **3 TX**  |
-| 4 3V3    | **4 3V3** |
-| 5 GND    | **5 GND** |
-
-
-## LOCO-Servo
-
-### V2.0/V2.1a-s
-The versions only differ in the pinout of the FDTI-interface.
-
-### FTDI Interface
-| V2.0     | V2.1a-s   |
-|:---------|:----------|
-| 1 DTS    | **1 DTS** |
-| 2 **TX** | **2 RX**  |
-| 3 **RX** | **3 TX**  |
-| 4 3V3    | **4 3V3** |
-| 5 GND    | **5 GND** |
+Beside the spezialized modules universial versions with a general I/O connectors can be used for different tasks. Two versions with compatible extension connectors are available, one with wireless capability, witch is based on the more powerfull 32 bit ESP32 processor.
 
 
 ## Universal
@@ -310,14 +134,6 @@ The version provide the default FTDI pinout. To flash a new software version, pi
 | 5   | **GND**   |
 
 
-### LOCO-Splitbox
-The splitbox is a tiny module that split up the CAN-bus line with three connectors. It also provides a power input connector for additional supply of the bus.
-
-For details ot the connector pinouts see the connector section below.
-
-**Power for the system has to be provided via a motor module or the splitboxes. It is not recommended to use the CAN connector for this purpose!**
-
-
 # LOCO-Control-Adapter
 The controller module provides connectors to apply pots, switches, leds and meters in an easy way to implement an own controller design.
 
@@ -335,6 +151,7 @@ The 5-Volt supply output can be used to supply additional electronic inside the 
 
 ### DRIVE / BREAK / POWER
 Three pot inputs for drive, break and power regulators.
+
 **3-pin JST-PH connectors**
 | DRIVE    | BREAK    | POWER    |
 |:---------|:---------|:---------|
@@ -344,6 +161,7 @@ Three pot inputs for drive, break and power regulators.
 
 ### DIR / MAINS
 Two analog switch inputs for direction and mains.
+
 **3-pin JST-PH connectors**
 | DIR      | MAINS    |
 |:---------|:---------|
@@ -353,6 +171,7 @@ Two analog switch inputs for direction and mains.
 
 ### V-BATT / V-MOT / AMP
 Three servo/analog outputs for analog meters. The output type is either a model servo or a pwm signal.
+
 **3-pin JST-PH connectors**
 | BATTERY  | MOTOR    | AMPERE   |
 |:---------|:---------|:---------|
@@ -362,6 +181,7 @@ Three servo/analog outputs for analog meters. The output type is either a model 
 
 ### STATUS
 The dual color LED (green/red with common GND) is conneted to this port.
+
 **3-pin JST-PH connectors**
 | pin | usage |
 |:----|:------|
@@ -372,6 +192,7 @@ The dual color LED (green/red with common GND) is conneted to this port.
 ### INST
 The instrument light output provides a +5V/+12 Volt supply for lighting the instruments. It is powered by the CAN-bus line and therefore can only use the maximum of 5 Ampere. The FET-ouput is designet to switch this current, but it is recommended to use LEDs with much less power consumption, especially when the WiFi controller is powered by a battery.
 To select the voltage a connection between the voltage and the center off jumper JP1 has to be soldered.
+
 **3-pin JST-PH connectors**
 | pin | usage      |
 |:----|:-----------|
@@ -390,6 +211,31 @@ The signal connector has two inputs for a high/low horn operation. Setting both 
 
 
 # Hardware
+
+## Power Supply
+
+The Modules are connected with 4-pin cables using MICRO MATE-N-LOK connectors. The cables have a supply line with a voltage of +6 up to +30 Volts. The supply can be provided through the modules that have got supply connectors (vertical 2-pin MICRO MATE-N-LOK connector). The motor module supplies directly from the motor driver.
+
+All supply connectors have a diode, so the input voltages on places in the network can be different. The supply voltage on the bus will be the highest value. The operation voltage for internal function of the modules is created onboard.
+
+So it is possible to connect two locomotives with 12 Volt and 24 Volt batteries without any problem. All connected units have a common GND level. When using the CAN-supply for LED-lights, it is important to have the big voltage range in mind. Best is to use a current regulator for the LEDs.
+
+**It is not recommended to use the CAN-Connector for supply of the bus.**
+
+
+### LOCO-Splitbox
+The splitbox is a tiny module that split up the CAN-bus line with three connectors. It also provides a power input connector for additional supply of the bus.
+
+For details ot the connector pinouts see the connector section below.
+
+**Power for the system has to be provided via a motor module or the splitboxes. It is not recommended to use the CAN connector for this purpose!**
+
+
+## ICP SDI pads
+To flash the bootloader on Atmega chips latter versions provide three pads to access the SDI port of the MCU. A jumper in the CS line between the MCU and the CAN controller has to be closed after the flash process.
+
+The hardware versions with the SDI pads are marked with a letter s at the end of the version string.
+
 
 ## Wired units
 | Unit            | Type            |
