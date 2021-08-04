@@ -149,7 +149,7 @@ void loop() {
 
 			case CAN_ID_HEARTBEAT:
 				module.heartbeat();
-
+// Serial.println("heartbeat");
 				break;
 
 			// case CAN_ID_LIGHT:

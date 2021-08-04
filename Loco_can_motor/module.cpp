@@ -124,7 +124,7 @@ void MODULE::update(void) {
 	// =======================================
 	// heartbeat timeout > STOP ALL
 	if (_heartbeat_timeout.check()) {
-
+// Serial.println("heartbeat timed out");
 		switches.set(0);
 
 		_emergency = true;
@@ -146,7 +146,7 @@ void MODULE::update(void) {
 
 		// mains off
 		else {
-
+// Serial.println("mains off");
 			status.set_flag(ERROR_FLAG, true);
 			_emergency = true;
 		}
@@ -258,13 +258,20 @@ void MODULE::update(void) {
 	// =======================================
 	// send current speed data to CAN
 	data[0] = status.get();
-
-	// data[1] = _current_speed >> 8;
-	// data[2] = _current_speed & 0xFF;
-
 	send(data, 1, CAN_ID_STATUS);
 
-// Serial.println(status.get(), BIN);
+
+	// send speed data
+	data[0] = _current_speed >> 8;
+	data[1] = _current_speed & 0xFF;
+	send(data, 2, CAN_ID_SPEED);
+
+
+	// send motor voltage
+	data[0] = _voltage.get();
+	send(data, 1, CAN_ID_MOTOR_VOLTAGE);
+
+Serial.println(_voltage.get(), BIN);
 
 }
 
