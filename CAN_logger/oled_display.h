@@ -26,11 +26,17 @@
 #define MAGENTA         0xF81F
 #define YELLOW          0xFFE0  
 #define WHITE           0xFFFF
+#define GREY			0xF3CF
 
 #define CHAR_WIDTH	6
 #define CHAR_HEIGHT 8
 
 
+#define ARROW_LEFT 0x11
+#define ARROW_RIGHT 0x10
+#define ARROW_UP 0x1E
+#define ARROW_DOWN 0x1F
+#define NO_ARROW 0x20
 
 class OLED_DISPLAY {
 
@@ -40,8 +46,9 @@ public:
 	void clear(uint8_t, uint8_t, uint8_t, uint8_t);
 	void clearText(uint8_t, uint8_t, uint8_t, uint8_t);
 	void clearLine(uint8_t);
-	void drawText(char*, uint16_t);
 
+	void drawChar(uint8_t, uint16_t);
+	void drawText(char*, uint16_t);
 	void drawByte(uint8_t, uint16_t);
 	void drawHexByte(uint8_t, uint16_t);
 	void drawInt(uint16_t, uint16_t);
@@ -52,6 +59,9 @@ public:
 	void cursor(uint8_t, uint8_t);
 	void position(uint8_t, uint8_t);
 	void hr(uint8_t, uint16_t);
+	void line(uint8_t, uint8_t, uint8_t, uint16_t);
+	void vline(uint8_t, uint8_t, uint8_t, uint16_t);
+	void block(uint8_t, uint8_t, uint8_t, uint8_t, uint16_t);
 
 private:
 	Adafruit_SSD1351* _tft;

@@ -21,12 +21,12 @@
 // #define PWM_MAX_VAL 255
 
 // default ramp time (0 to max) and update rate (ms)
-#define RAMP_DEFAULT 2000
-#define RAMP_EMERGENCY 1000
+#define RAMP_DEFAULT 1000
+#define RAMP_EMERGENCY 500
 
 #define PWM_RAMP_UPDATE_RATE 20
 
-#define VOLTAGE_ZERO 500 // maximal voltage for null detection in mV
+#define VOLTAGE_ZERO 400 // maximal voltage for null detection in 1/10 V
 
 /*
  * The bus connector offers seven IO-Lines depending on the used board
@@ -79,8 +79,8 @@
 	#define DRIVE_FREQUENCY PWM_RAMP_31KHZ
 	#define BREAK_FREQUENCY PWM_RAMP_1KHZ
 
-	#define DRIVE_RAMP 1000
-	#define BREAK_RAMP 500
+	#define DRIVE_RAMP 500
+	#define BREAK_RAMP 200
 
 	#define VOLTAGE_0 A0
 	#define VOLTAGE_1 A1
@@ -206,7 +206,7 @@
 	#define RELAIS_R 8                                                          
 	// #define RELAIS_R 8
 
-	#define HORN -1 
+	#define HORN -1
 	#define LICHT -1
 
 	#define PWM_DRIVE 9
@@ -223,6 +223,39 @@
 
 	#define BATTERY_VOLTAGE_1 A2
 	#define BATTERY_VOLTAGE_2 A3
+
+	#define ANALOG_MAX_VAL 1024
+
+
+#elif BOARD_VERSION == BOARD_UNIV_V_2_X
+
+	#define CAN_STATUS_LED 5
+
+	#define ANALOG_RESOLUTION 10
+
+	// temporary values
+	// #define POT_SPEED A2
+	// #define SWITCH_DIR A3
+
+	// IO definition
+	#define RELAIS_F 2
+	#define RELAIS_R 3                                                          
+	#define RELAIS_MAIN 4
+
+	#define HORN -1 
+	#define LICHT -1
+
+	#define PWM_DRIVE 9
+	#define PWM_BREAK 6
+
+	#define DRIVE_FREQUENCY PWM_RAMP_31KHZ
+	#define BREAK_FREQUENCY PWM_RAMP_1KHZ
+
+	#define DRIVE_RAMP 1000
+	#define BREAK_RAMP 500
+
+	#define VOLTAGE_0 A0
+	#define VOLTAGE_1 A1
 
 	#define ANALOG_MAX_VAL 1024
 

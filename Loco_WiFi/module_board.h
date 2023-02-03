@@ -30,9 +30,9 @@
 // 						4   GND
 
 
-#if BOARD_VERSION == BOARD_WIFI_V_2_0
+#if BOARD_VERSION == BOARD_CONTROL_V2_0
 
-	#define CAN_STATUS_LED 5
+	#define CAN_STATUS_LED 16
 
 	
 

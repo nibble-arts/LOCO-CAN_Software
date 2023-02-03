@@ -102,6 +102,13 @@ void WEBSERVER::begin() {
 
 
     // =============================================
+    // administration page
+    // _server->on("/admin", HTTP_GET, [this] (AsyncWebServerRequest *request) {
+    //     request->send(200, "text/html", _ip.toString());
+    // });
+
+
+    // =============================================
     // GET API call
     _server->on("/api", HTTP_GET, [this] (AsyncWebServerRequest *request) {
       

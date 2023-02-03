@@ -43,6 +43,8 @@
 
 #define HEARTBEAT 500
 
+#define BLINKTIME 500
+
 // =====================================
 // setup data in EEPROM
 //
@@ -110,7 +112,7 @@
  *
  * STATUS
  * byte 0:   7      6      5      4      3      2      1      0
- *         error  ready   stop   curr   volt   dir   drive  mains
+ *         error  ready   stop          aux    dir   drive  mains
  *
  * DRIVE VALUE: 10-bit value of drive voltage
  * byte 1: drive bit 8-9

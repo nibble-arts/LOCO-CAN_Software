@@ -37,6 +37,10 @@ void MODULE::begin(uint16_t ramp_time) {
 	pinMode(RELAIS_F, OUTPUT);
 	pinMode(RELAIS_R, OUTPUT);
 
+	#ifdef RELAIS_MAIN
+		pinMode(RELAIS_MAIN, OUTPUT);
+	#endif
+
 	set_ramp(ramp_time);
 
 	_target_speed = 0;
@@ -67,7 +71,8 @@ void MODULE::begin(uint16_t ramp_time) {
 	_voltage_timeout.begin(1000);
 
 	// start voltage
-	_voltage.begin(VOLTAGE_0, VOLTAGE_1, ANALOG_RESOLUTION, 23);
+	_voltage.begin(VOLTAGE_0, VOLTAGE_1, ANALOG_RESOLUTION, 30);
+	_voltage.set_filter(0.25);
 }
 
 
@@ -79,6 +84,8 @@ void MODULE::update(void) {
 	uint8_t data[8];
 	CAN_MESSAGE message;
 
+
+	// presume error
 	status.set_flag(ERROR_FLAG, false);
 
 
@@ -122,9 +129,20 @@ void MODULE::update(void) {
 
 
 	// =======================================
+	// set status ready
+	status.set_flag(READY_FLAG, ready());
+
+
+	// error if not nulled
+	if (!_drive_nulled && status.get_flag(DRIVE_FLAG)) {
+		status.set_flag(ERROR_FLAG, true);
+	}
+
+
+	// =======================================
 	// heartbeat timeout > STOP ALL
 	if (_heartbeat_timeout.check()) {
-// Serial.println("heartbeat timed out");
+
 		switches.set(0);
 
 		_emergency = true;
@@ -142,11 +160,22 @@ void MODULE::update(void) {
 
 			status.set_flag(ERROR_FLAG, false);
 			_emergency = false;
+
+
+			// send speed
+			data[0] = _current_speed >> 8;
+			data[1] = _current_speed & 0xFF;
+			send(data, 2, CAN_ID_SPEED);
+
+			// send motor voltage
+			data[0] = _motor_voltage() >> 8;
+			data[1] = _motor_voltage() % 0xFF;
+			send(data, 2, CAN_ID_MOTOR_VOLTAGE);
+
 		}
 
 		// mains off
 		else {
-// Serial.println("mains off");
 			status.set_flag(ERROR_FLAG, true);
 			_emergency = true;
 		}
@@ -159,6 +188,12 @@ void MODULE::update(void) {
 	// =======================================
 	// status is ready
 	if (ready() && !_emergency) {
+
+		// =======================================
+		// switch on main relais
+		#ifdef RELAIS_MAIN
+			digitalWrite(RELAIS_F, HIGH);
+		#endif
 
 		// =======================================
 		// update direction when drive is stopped
@@ -196,11 +231,13 @@ void MODULE::update(void) {
 		// clear directions when stopped and mains off
 		if (stopped() && !switches.get_flag(MAINS_FLAG)) {
 			_clear_dir();
+
+			// =======================================
+			// set mains relais OFF
+			#ifdef RELAIS_MAIN
+				digitalWrite(RELAIS_MAIN, LOW);
+			#endif
 		}
-
-
-		// =======================================
-		// set mains relais OFF, only > board V1.2
 	}
 
 
@@ -241,37 +278,11 @@ void MODULE::update(void) {
 	_current_speed = _pwm_drive.update();
 	_current_break = _pwm_break.update();
 
-	// update mains relais (only if drive and break are pwm.stopped)
-	// TODO no output in version 2.0
-
 
 	// =======================================
-	// set status ready
-	status.set_flag(READY_FLAG, ready());
-
-
-	// error if not nulled
-	if (!_drive_nulled && status.get_flag(DRIVE_FLAG)) {
-		status.set_flag(ERROR_FLAG, true);
-	}
-
-	// =======================================
-	// send current speed data to CAN
+	// send status
 	data[0] = status.get();
 	send(data, 1, CAN_ID_STATUS);
-
-
-	// send speed data
-	data[0] = _current_speed >> 8;
-	data[1] = _current_speed & 0xFF;
-	send(data, 2, CAN_ID_SPEED);
-
-
-	// send motor voltage
-	data[0] = _voltage.get();
-	send(data, 1, CAN_ID_MOTOR_VOLTAGE);
-
-Serial.println(_voltage.get(), BIN);
 
 }
 
@@ -384,7 +395,7 @@ bool MODULE::stopped(void) {
 bool MODULE::standing(void) {
 
 	// voltage under limit
-	if (abs(_voltage.get()) <= VOLTAGE_ZERO) {
+	if (abs(_motor_voltage()) <= VOLTAGE_ZERO) {
 
 		_voltage_timeout.retrigger();
 
@@ -404,6 +415,11 @@ bool MODULE::standing(void) {
 }
 
 
+int16_t MODULE::_motor_voltage(void) {
+	return _voltage.get(MEASURE_VALUE_RELATIVE);
+}
+
+
 // send data to can
 bool MODULE::send(uint8_t* data, uint8_t length, long id) {
 
@@ -412,6 +428,7 @@ bool MODULE::send(uint8_t* data, uint8_t length, long id) {
 	led.on();
 	
 	can_com.send(data, length, id);
+	delay(10);
 
 	led.off();
 }

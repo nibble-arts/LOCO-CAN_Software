@@ -137,6 +137,11 @@
 	#define METER_MOTOR_VOLT 7
 	#define METER_AMP 8
 
+	// meter maximum input value
+	#define METER_VOLT_VALUE 2100
+	#define METER_AMP_VALUE 8800
+	#define METER_MOTOR_VALUE 2100
+
 	#define ANALOG_DRIVE A0
 	#define ANALOG_BREAK A1
 	// #define ANALOG_POWER A2 // alternative as second light switch

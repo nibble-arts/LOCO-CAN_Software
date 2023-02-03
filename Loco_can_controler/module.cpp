@@ -82,28 +82,40 @@ void MODULE::begin(void) {
 	// ===================================================================
 	// start Analog meters
 	_meter_volt.begin(METER_VOLT, METER_TYPE_SERVO);
+	_meter_volt.set_limits(130, 55);
+	_meter_volt.set_value_limits(100, METER_VOLT_VALUE);
 
 	#ifdef METER_AMP
 		_meter_amp.begin(METER_AMP, METER_TYPE_SERVO);
+		_meter_amp.set_limits(130, 55);
+		_meter_amp.set_value_limits(500, METER_AMP_VALUE);
 	#endif
 
 	#ifdef METER_MOTOR_VOLT
 		_meter_motor.begin(METER_MOTOR_VOLT, METER_TYPE_SERVO);
+		_meter_motor.set_limits(130, 58);
+		_meter_motor.set_value_limits(100, METER_MOTOR_VALUE);
 	#endif
 
 
 	// ===================================================================
 	// INIT SEQUENCE
 	// set meters to max
-	_meter_volt.set(1000);
+	delay(500);
+	
+	_meter_volt.set(METER_VOLT_VALUE);
 
 	#ifdef METER_AMP
-		_meter_amp.set(1000);
+		_meter_amp.set(METER_AMP_VALUE);
 	#endif
 
 	#ifdef METER_MOTOR_VOLT
-		_meter_motor.set(1000);
+		_meter_motor.set(METER_MOTOR_VALUE);
 	#endif
+
+
+	// test instrument light
+	digitalWrite(INSTRUMENT_LIGHT, HIGH);
 
 
 	// show startup on status led
@@ -122,6 +134,7 @@ void MODULE::begin(void) {
 
 	_status_led.off();
 
+
 	// reset meters
 	_meter_volt.set(0);
 
@@ -132,6 +145,10 @@ void MODULE::begin(void) {
 	#ifdef METER_MOTOR_VOLT
 		_meter_motor.set(0);
 	#endif
+
+
+	// end instrument light test
+	digitalWrite(INSTRUMENT_LIGHT, LOW);
 
 
 	// ===================================================================
@@ -193,6 +210,9 @@ void MODULE::update(void) {
 	// set status led
 	_led();
 
+
+// DEBUG set voltage to 13,5V
+	// _meter_volt.set(1350);
 
 	// update _status LED
 	_status_led.update();

@@ -20,6 +20,7 @@ void METER::begin(uint8_t port) {
 void METER::begin(uint8_t port, uint8_t type) {
 	_port = port;
 	set_type(type);
+	set_value_limits(METER_DEFAULT_MIN_VALUE, METER_DEFAULT_MAX_VALUE);
 
 
 	// init by type
@@ -59,11 +60,21 @@ void METER::set_limits(uint16_t min, uint16_t max) {
 }
 
 
+void METER::set_value_limits(uint16_t val_min, uint16_t val_max) {
+	_val_min = val_min;
+	_val_max = val_max;
+}
+
+
 void METER::set(uint16_t value) {
 
 	uint16_t calc;
 
-	calc = map(value, 0, 1000, _min, _max);
+	if (value > _val_max) {
+		value = _val_max;
+	}
+
+	calc = map(value, _val_min, _val_max, _min, _max);
 
 	// set by type
 	switch(_type) {

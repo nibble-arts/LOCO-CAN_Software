@@ -85,6 +85,7 @@ class MODULE {
 		void ramp(void);
 		bool stopped(void); // all standing and switched off
 		bool standing(void); // not driving
+		int16_t _motor_voltage(void);
 
 		void _set_dir(bool); // set direction
 		void _clear_dir(void); // clear all directions

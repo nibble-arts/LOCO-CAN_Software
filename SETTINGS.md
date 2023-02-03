@@ -17,7 +17,7 @@ Each module has an eight bit identification code containing of 3 bits for the mo
 
 To change the settings of the module the highest CAN identifiers in the range between 0x700 and 0x7FF are used. The messages are devided in three groups for requests, replys and setup data.
 
-For requests and replys bit 8 of the 11-bit identifier has to be 1, for write commends, the bit 8 has to be 0. The identifier ranges are therefore:
+For requests and replys bit 8 of the 11-bit identifier has to be 1, for write commands, the bit 8 has to be 0. The identifier ranges are therefore:
 
 * 0x700 to 0x77F 	for writing data
 * 0x780 to 0x7FE 	for data reply

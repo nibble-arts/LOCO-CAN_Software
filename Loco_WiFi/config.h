@@ -17,20 +17,20 @@
 
 #define BOARD_DEVKIT_V1 1
 #define BOARD_LOLIN_D32 2
-#define BOARD_CONTROL_V2.0
+#define BOARD_CONTROL_V2_0 3
 
 
 /*
  * select correct motherboard from list above
  */
-#define BOARD_VERSION BOARD_LOLIN_D32
+#define BOARD_VERSION BOARD_CONTROL_V2_0
 #define SOFTWARE_VERSION 0x0010
 
 
 /*
  * WIFI server configuration
  */
-#define WIFI_AP false
+#define WIFI_AP_MODE false
 
 
 #define WIFI_SSID "Toms-2.5G"

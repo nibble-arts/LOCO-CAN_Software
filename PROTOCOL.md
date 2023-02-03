@@ -3,7 +3,7 @@
 The protocol uses the 29-bit extended CAN-identifier for all messages with the basic 11 bits as group identifier and the 18 extended bits for the device UUID. The group bits are used in the following way:
 
 ## ID & UUID
-The ID defines the type of message while the UUID is the unique identification of a node unit. With the UUID messages of the same type can be distinguished from a receiving node, if this certain message is ment for it. Messages ment for all devices (train light) can discard the UUID and only use the group identification.
+The ID defines the type of message while the UUID is the unique identification of a node unit. With the UUID messages of the same type from a receiving node it can be distinguished, if this certain message is ment for it. Messages ment for all devices (train light) can discard the UUID and only use the group identification.
 
 ### 10-8 Message Priority (max 8)
 The highest 3 bits define the priority for the messages. The highest value 0x7 with the least priority is used for node setup messages.
@@ -50,7 +50,7 @@ The control commands contain control messages for the system, like the system st
 1. Switch           (f=0x41f)
 
 ## VALUE Commands
-The value commands send measurement values to the system. Currernt values are high priority to be used for protection usage.
+The value commands send measurement values to the system. Currernt values are high priority to be used for protection.
 
 ### 0x1nm      High Priority Value
 0. Battery current (main current)   (f=0x10f)

@@ -21,7 +21,12 @@ void OLED_DISPLAY::clearText(uint8_t x, uint8_t y, uint8_t w, uint8_t h) {
 }
 
 void OLED_DISPLAY::clearLine(uint8_t y) {
-	clear(0, y * CHAR_HEIGHT, DISPLAY_WIDTH, y * CHAR_HEIGHT);
+	clear(0, y * CHAR_HEIGHT, DISPLAY_WIDTH, CHAR_HEIGHT);
+}
+
+void OLED_DISPLAY::drawChar(uint8_t c, uint16_t color) {
+	textColor(color);
+	_tft->write(c);
 }
 
 void OLED_DISPLAY::drawText(char *text, uint16_t color) {
@@ -65,6 +70,18 @@ void OLED_DISPLAY::cursor(uint8_t x, uint8_t y) {
 	position(x * CHAR_WIDTH, y * CHAR_HEIGHT);
 }
 
+void OLED_DISPLAY::line(uint8_t x, uint8_t y, uint8_t w, uint16_t color) {
+	_tft->drawFastHLine(x, y, w, color);
+}
+
+void OLED_DISPLAY::vline(uint8_t x, uint8_t y, uint8_t h, uint16_t color) {
+	_tft->drawFastVLine(x, y, h, color);
+}
+
+void OLED_DISPLAY::block(uint8_t x, uint8_t y, uint8_t w, uint8_t h, uint16_t color) {
+	_tft->fillRect(x, y, w, h, color);
+}
+
 void OLED_DISPLAY::hr(uint8_t y, uint16_t color) {
-	_tft->drawFastHLine(0, y, _tft->width()-1, color);
+	line(0, y, _tft->width()-1, color);
 }

@@ -17,7 +17,7 @@ The structure with a bus system makes it easy to expand the contruction with add
 
 # Configuration
 **This functionality is not yet implemented**
-The modules are shipped with a standard configuration like the assignment of the light module outputs to the light stati or the potentiometer value for neutral position of the throtle. The paramters can be adjusted using the webinterface of a WiFi-modul. Connecting with a laptop or smartphone gives access to a user-friendly interface for this task.
+The modules are shipped with a standard configuration like the assignment of the switch module outputs to the light stati or the potentiometer value for neutral position of the throtle. The paramters can be adjusted using the webinterface of a WiFi-modul. Connecting with a laptop or smartphone gives access to a user-friendly interface for this task.
 
 ## Software Updates
 The pinout of the FTDI interface for flashing new software differs in the early versions. The standard pinout will be implemented in all revisions, divergent pinouts are listed with the version descriptions.
@@ -25,13 +25,23 @@ The pinout of the FTDI interface for flashing new software differs in the early 
 All versions are compatible on the CAN-bus, the differences are only in the expansion ports.
 
 Standard FTDI Interface to flash software updates
-| pin | usage     |
-|:----|:----------|
-| 1   | **1 DTS** |
-| 2   | **2 RX**  |
-| 3   | **3 TX**  |
-| 4   | **4 3V3** |
-| 5   | **GND**   |
+| pin | usage     | cable  |
+|:----|:----------|--------|
+| 1   | **1 DTS** | yellow |
+| 2   | **2 RX**  | braun  |
+| 3   | **3 TX**  | white  |
+| 4   | **4 3V3/5V** | green  |
+| 5   | **GND**   | GND    |
+
+For in circuit programming four measuring points are implemented. Only the last version has an additional point for a reset.
+
+ICP-Interface
+| pin | usage |
+|:----|:------|
+| 1   | SCK   |
+| 2   | SI    |
+| 3   | SO    |
+| 4   | RST   |
 
 ## CAN Software Updates
 **This functionality should be implemented in the future**
@@ -261,6 +271,18 @@ The CAN-bus is found on all modules, even the WIFI. It connects all modules and 
 **4-pin 2x2**
 Plug: MATE-N-LOK 794617-4
 Jack: MATE-N-LOK 3-794618-4
+
+| pin | usage                      |
+|:---:|:---------------------------|
+| 1   | GND                        |
+| 2   | CAN-L                      |
+| 3   | CAN-H                      |
+| 4   | +6-30 Volt / max. 5 Ampere |
+
+**4-pin Mini-XLR**
+For the connection between vehicles the 4-pin Mini-XSL connectors are used. The cables are equiped with male type connectors
+on both ends. Although the CAN-bus is very resistant to electrical interferences, a shielded cable is strongly recommended.
+The shielding has to conneected to the GND pin.
 
 | pin | usage                      |
 |:---:|:---------------------------|

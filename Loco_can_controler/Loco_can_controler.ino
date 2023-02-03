@@ -40,7 +40,7 @@
  * 
  * STATUS
  * byte 0:   7      6      5      4      3      2      1      0
- *         error  ready   stop                 dir   drive  mains
+ *         error  ready   stop          aux    dir   drive  mains
  */
 
 

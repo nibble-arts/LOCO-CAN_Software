@@ -127,7 +127,14 @@ void loop() {
 
 			case CAN_ID_DRIVE:
 
-				switches.set(message.data[0]);
+				// remove messy data
+				if (message.data[0] != 0) {
+					switches.set(message.data[0]);
+				}
+
+// Serial.print(filter);
+// Serial.print(" ");
+// Serial.println(switches.get(), BIN);
 
 				// =======================================
 				// set values
@@ -149,7 +156,6 @@ void loop() {
 
 			case CAN_ID_HEARTBEAT:
 				module.heartbeat();
-// Serial.println("heartbeat");
 				break;
 
 			// case CAN_ID_LIGHT:

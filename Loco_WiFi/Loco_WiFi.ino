@@ -21,6 +21,7 @@
 
 // #include <ArduinoJson.h>
 #include "config.h"
+#include "module_board.h"
 
 #include "intelliled.h"
 #include "can_protocol.h"
@@ -30,59 +31,55 @@
 #include "can_com.h"
 
 
-#define STATUS_LED 5
-#define BLINKTIME 500
-
 
 struct DATA {
-    double uuid;
-    int type;
+  double uuid;
+  int type;
 };
 
 
-INTELLILED led(STATUS_LED);
+INTELLILED led(CAN_STATUS_LED);
 WEBSERVER server(WIFI_PORT);
 
 
 void setup() {
 
-    // disable watchdogs
-    disableCore0WDT();
-    disableCore1WDT();
-    disableLoopWDT();
+  // disable watchdogs
+  disableCore0WDT();
+  disableCore1WDT();
+  disableLoopWDT();
 
-    led.off();
-        
-    Serial.begin(115200);
+  led.off();
 
-    Serial.println("");
+  Serial.begin(115200);
 
-    // select WiFi connection type
-    if (WIFI_AP == true) {
-        server.ap(AP_SSID, AP_PASSWORD);
-    }
-    else {
-        server.wifi(WIFI_SSID, WIFI_PASSWORD);
-    }
+  Serial.println("");
 
-    server.begin();
+  // select WiFi connection type
+  if (WIFI_AP_MODE == true) {
+    server.ap((char*)AP_SSID, (char*)AP_PASSWORD);
+  }
+  else {
+    server.wifi((char*)WIFI_SSID, (char*)WIFI_PASSWORD);
+  }
 
+  server.begin();
 
-    led.blink(BLINKTIME);
+  led.blink(BLINKTIME);
 
-    DATA data[16];
+  DATA data[16];
 
-    data[0].uuid = 1234567;
-    data[0].type = 0x47;
+  data[0].uuid = 1234567;
+  data[0].type = 0x47;
 
-    data[1].uuid = 9876543;
-    data[1].type = 0xF1;
+  data[1].uuid = 9876543;
+  data[1].type = 0xF1;
 }
 
 
 void loop() {
 
-    // blink heartbeat
-    led.update();
+  // blink heartbeat
+  led.update();
 
 }

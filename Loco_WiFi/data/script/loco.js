@@ -53,7 +53,7 @@ function update_action(text) {
 function get_status() {
 
 	$.ajax({
-		url: 'http://192.168.0.92/api?cmd=status',
+		url: 'http://192.168.0.167/api?cmd=status',
 		timeout: 4000,
 		// dataType: "application/json",
 
@@ -88,7 +88,7 @@ function load() {
 
 	// send request
 	$.ajax({
-		url: 'http://192.168.0.92/api?cmd=load',
+		url: 'http://192.168.0.167/api?cmd=load',
 		timeout: 4000,
 		// dataType: "application/json",
 

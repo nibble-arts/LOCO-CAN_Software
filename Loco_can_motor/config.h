@@ -29,6 +29,9 @@
 #define BOARD_V_1_0 1 // V1.0
 #define BOARD_V_1_2 2 // V1.2
 #define BOARD_V_2_0 3 // V2.0
+#define BOARD_V_2_1 4 // V2.1
+#define BOARD_V_2_1A 5 // V2.1a
+#define BOARD_UNIV_V_2_X 6 // Universal V2.x
 // =====================================
 
 
@@ -37,7 +40,7 @@
 // select board version
 //
 // =====================================
-#define BOARD_VERSION BOARD_V_2_0
+#define BOARD_VERSION BOARD_UNIV_V_2_X
 #define SOFTWARE_VERSION 0x0100
 
 #include "module_board.h"
