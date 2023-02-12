@@ -318,8 +318,8 @@
 	#define DRIVE_RAMP 1000
 	#define BREAK_RAMP 500
 
-	#define VOLTAGE_0 35
-	#define VOLTAGE_1 34
+	#define VOLTAGE_0 13
+	#define VOLTAGE_1 12
 
 	#define ANALOG_MAX_VAL 4096
 
