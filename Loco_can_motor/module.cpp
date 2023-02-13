@@ -172,6 +172,7 @@ void MODULE::update(void) {
 			data[1] = _motor_voltage() % 0xFF;
 			send(data, 2, CAN_ID_MOTOR_VOLTAGE);
 
+Serial.println(data);
 		}
 
 		// mains off

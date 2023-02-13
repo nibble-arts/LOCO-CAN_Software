@@ -62,7 +62,7 @@
 // =====================================
 
 // max settings bytes
-#define MODULE_MAX_SETTINGS 1
+// #define MODULE_MAX_SETTINGS 1
 
 
 #endif

@@ -103,7 +103,7 @@ class MODULE {
 
 		MEASURE _voltage;
 
-		#ifdef BATTERY_VOLTAGE_1 && BATTERY_VOLTAGE_2
+		#if defined(BATTERY_VOLTAGE_1) && defined(BATTERY_VOLTAGE_2)
 			MEASURE _batt_volt_1;
 			MEASURE _batt_volt_2;
 		#endif
