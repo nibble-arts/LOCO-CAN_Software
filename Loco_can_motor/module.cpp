@@ -172,7 +172,6 @@ void MODULE::update(void) {
 			data[1] = _motor_voltage() % 0xFF;
 			send(data, 2, CAN_ID_MOTOR_VOLTAGE);
 
-Serial.println(data);
 		}
 
 		// mains off
@@ -184,17 +183,42 @@ Serial.println(data);
 
 
 
+// Serial.print("switch: ");
+// Serial.print(switches.get_flag(MAINS_FLAG), BIN);
+// Serial.print(" status: ");
+// Serial.print(status.get(), BIN);
+// Serial.print(" emerg: ");
+// Serial.print(_emergency);
+// Serial.print(" V: ");
+// Serial.println(_motor_voltage());
+
 
 	// =======================================
 	// =======================================
-	// status is ready
+	// mains on if stopped and mains switch on
+	#ifdef RELAIS_MAIN
+
+		if (stopped() || _emergency) {
+
+			// switch on main relais
+			if (switches.get_flag(MAINS_FLAG) != 0) {
+				_set_mains(true);
+			}
+
+			// mains relais OFF
+			else {
+				_set_mains(false);
+				_clear_dir();
+			}
+		}
+
+
+	#endif
+
+	// =======================================
+	// =======================================
+	// status is ready to drive
 	if (ready() && !_emergency) {
-
-		// =======================================
-		// switch on main relais
-		#ifdef RELAIS_MAIN
-			digitalWrite(RELAIS_F, HIGH);
-		#endif
 
 		// =======================================
 		// update direction when drive is stopped
@@ -232,12 +256,6 @@ Serial.println(data);
 		// clear directions when stopped and mains off
 		if (stopped() && !switches.get_flag(MAINS_FLAG)) {
 			_clear_dir();
-
-			// =======================================
-			// set mains relais OFF
-			#ifdef RELAIS_MAIN
-				digitalWrite(RELAIS_MAIN, LOW);
-			#endif
 		}
 	}
 
@@ -363,6 +381,11 @@ bool MODULE::direction(void) {
 // set acceleration
 void MODULE::set_ramp(uint16_t ramp) {
 	_pwm_drive.set_ramp(ramp);
+}
+
+// set mains relais
+void MODULE::_set_mains(bool stat) {
+	digitalWrite(RELAIS_MAIN, stat);
 }
 
 // set direction outputs

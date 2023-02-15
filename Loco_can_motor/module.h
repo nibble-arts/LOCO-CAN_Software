@@ -87,6 +87,7 @@ class MODULE {
 		bool standing(void); // not driving
 		int16_t _motor_voltage(void);
 
+		void _set_mains(bool); // set mains relais
 		void _set_dir(bool); // set direction
 		void _clear_dir(void); // clear all directions
 		bool _has_direction(void); // check if direction is set

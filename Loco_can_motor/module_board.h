@@ -172,8 +172,8 @@
 	#define DRIVE_FREQUENCY PWM_RAMP_31KHZ
 	#define BREAK_FREQUENCY PWM_RAMP_1KHZ
 
-	#define DRIVE_RAMP 1000
-	#define BREAK_RAMP 500
+	#define DRIVE_RAMP 20
+	#define BREAK_RAMP 10
 
 	#define VOLTAGE_0 A0
 	#define VOLTAGE_1 A1
@@ -239,7 +239,7 @@
 
 	// IO definition
 	#define RELAIS_F 2
-	#define RELAIS_R 3                                                          
+	#define RELAIS_R 3                                                        
 	#define RELAIS_MAIN 4
 
 	#define HORN -1 
